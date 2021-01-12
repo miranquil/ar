@@ -1,8 +1,11 @@
 ---
-title: LeetCode 1. The Sum
+title: 1. The Sum
 urlname: leetcode_the_sum
 date: 2021-01-12 22:12:50
 tags:
+  - LeetCode
+photos:
+  - /leetcode.png
 ---
 
 <!--more-->
