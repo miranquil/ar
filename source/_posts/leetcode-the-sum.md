@@ -6,6 +6,8 @@ tags:
   - LeetCode
 photos:
   - /leetcode.png
+categories:
+  - Algorithm & Programming
 ---
 
 <!--more-->
