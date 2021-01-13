@@ -7,7 +7,7 @@ title: Miranquil Garden
 subtitle: 
 description: 有一点自己的思想
 author: Miranquil
-language: zh-CN
+language: en-US
 timezone: Asia/Shanghai
 
 # URL
@@ -97,7 +97,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: paper
+theme: inside
 highlight:
   hljs: true
   enable: true
