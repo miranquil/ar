@@ -4,6 +4,7 @@ date: 2021-01-13 21:26:04
 categories:
   - Algorithm & Programming
 tags:
+  - IOA
 ---
 
 老实说这是翻译校稿的锅，不过也的确有点难为他们了。
@@ -98,4 +99,3 @@ func findMaximumSubArray(s []int, low, high int) (ansLeft, ansRight, ansSum int)
 因此第一个例子的结果`2 2 3`的正确解读为“在第二天($7)买入并在第**3**天($10)卖出”，盈利$3。正解。
 
 本记录侧面表达出在算法中深刻理解每个变量被赋予意义的重要性。
-

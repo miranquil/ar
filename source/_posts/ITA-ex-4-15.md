@@ -3,7 +3,7 @@ title: 《算法导论》练习4.1-5
 date: 2021-01-14 23:16:12
 urlname: ITA_ex_4_15
 tags:
-  - 算法导论
+  - IOA
 categories:
   - Algorithm & Programming
 ---
@@ -74,5 +74,3 @@ func maxSubArray(nums []int) (left, right, sum int) {
 	return maxLeft, maxRight, maxSum
 }
 ```
-
-
