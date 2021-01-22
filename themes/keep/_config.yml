@@ -18,7 +18,7 @@ style:
   avatar: /images/avatar.svg
 
   # Favicon (You can use local image or image external link)
-  favicon: 
+  favicon: /images/logo.svg
 
   # Article image align position, value: left | center
   article_img_align: left
@@ -221,4 +221,4 @@ footer:
 # ---------------------------------------------------------------------------------------
 # Keep version (Please don't modify)
 # ---------------------------------------------------------------------------------------
-version: 3.3.0
+version: 3.3.1
