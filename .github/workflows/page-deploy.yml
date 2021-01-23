@@ -36,6 +36,10 @@ jobs:
           npm install hexo-cli -g
           npm install
 
+      - name: Fetch Theme
+        run: |
+          git clone git@github.com:miranquil/hexo-theme-keep.git themes/keep
+    
       - name: Deploy
         run: |
           hexo clean
