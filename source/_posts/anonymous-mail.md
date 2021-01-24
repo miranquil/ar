@@ -15,7 +15,7 @@ categories:
 
 [10 Minute Mail](https://temp-mail.org/zh/10minutemail)
 
-[altmails | Disposable anonymous email alias forwarding service](https://altmails.com)
+[altmails | Disposable anonymous email alias forwarding service](https://altmails.com)（需要 Google reCAPTCHA 验证）
 
 <!--more-->
 
