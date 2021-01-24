@@ -7,18 +7,17 @@ tags:
 categories:
   - Algorithm & Programming
 ---
-借[官方文档](https://docs.python.org/zh-cn/3.7/library/functools.html)的话说：
+借 [官方文档](https://docs.python.org/zh-cn/3.7/library/functools.html) 的话说：
 > functools 模块应用于高阶函数，即——参数或（和）返回值为其他函数的函数。通常来说，此模块的功能适用于所有可调用对象。
 
 这里记录一些个人需求用到的内容。
-
 
 <!--more-->
 ## functools.partial
 
 > Return a new partial object which when called will behave like func called with the positional arguments args and keyword arguments keywords. If more arguments are supplied to the call, they are appended to args. If additional keyword arguments are supplied, they extend and override keywords.
 
-简单来说，partial会返回一个“客制化”的对象，直接call会得到对应func执行的结果，其中传入的参数可以进行客制化。
+简单来说，partial 会返回一个“客制化”的对象，直接 call 会得到对应 func 执行的结果，其中传入的参数可以进行客制化。
 
 partial 的原理大概可以粗略的这样表示：
 
@@ -72,7 +71,7 @@ o3(1, 2, 3, 4)
 
 其实换一种角度更容易理解，以第四行 `o3(2, b=3, c=4, d=5)`举例。
 
-1. 根据 o3 的定义，参数 b 的值为2，其他参数未知。此时参数表为 {a:? b:2 c:? d:?}。
+1. 根据 o3 的定义，参数 b 的值为 2，其他参数未知。此时参数表为 {a:? b:2 c:? d:?}。
 2. 依照原函数 output 的参数表顺序，传入未指定参数名的参数（只有一个 `2`，按顺序为参数 `a`）。此时参数表为 {a:2 b:2 c:? d:?}。
 3. 传入其他**已经指定参数名**的参数，即 `(b=3, c=4, d=5)`。此时参数表中 b 的值被新值取代，其他参数也逐个更新。为 {a:2 b:3 c:4 d:5}。
 4. 依照最新的参数表 {a:2 b:3 c:4 d:5}，将参数代入原函数 `output` 执行，即 `output(2, 3, 4, 5)`。
@@ -87,4 +86,4 @@ o3(1, 2, 3, 4)
 18
 ```
 
-同样，若我们在调用的时候重新为 base 赋值，如`basetwo('10010', base=10)`，结果自然是10010。
+同样，若我们在调用的时候重新为 base 赋值，如`basetwo('10010', base=10)`，结果自然是 10010。

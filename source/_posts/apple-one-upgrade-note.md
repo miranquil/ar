@@ -8,6 +8,10 @@ categories:
   - Experience
 ---
 
+**Apple One 个人笔记**
+
+<!--more-->
+
 之前我是个人订阅的 $19.95/month Family 计划，包含 Apple Music, Apple TV+, Apple Arcade 和 200GB iCloud 存储空间，最多可以支持五个人共享。但个人升级这个本身是为了这几项服务合集比较便宜，所以一直没有共享。
 
 **还有一个重要原因：** iCloud 空间如果共享的话，是多人共同拥有总容量限制。而 200GB 对我而言是多了富余少了不够，所以也没什么空间和人共享。
