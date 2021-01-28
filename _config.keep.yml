@@ -15,7 +15,7 @@ style:
   primary_color: '#0066CC'
 
   # Avatar (You can use local image or image external link)
-  avatar: /avatar.JPG
+  avatar: /avatar.bmp
 
   # Favicon (You can use local image or image external link)
   favicon:
@@ -168,10 +168,10 @@ comment:
   # Valine
   # See: https://github.com/xCss/Valine
   valine:
-    enable: false
-    appid:                # your leancloud application appid
-    appkey:               # your leancloud application appkey
-    placeholder:          # your placeholder
+    enable: true
+    appid: d1KhKhlbXdwPOvTr8nDAVU96-gzGzoHsz               # your leancloud application appid
+    appkey: HTNn6DaX90N0i5crIPgymV3a              # your leancloud application appkey
+    placeholder: Do not do evil.         # your placeholder
 
   # Gitalk
   # See: https://github.com/gitalk/gitalk
