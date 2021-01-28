@@ -43,7 +43,7 @@ style:
   # Scroll style settings
   scroll:
     progress_bar:
-      enable: true
+      enable: false
     percent:
       enable: true
 
@@ -94,22 +94,36 @@ home_article:
 # ---------------------------------------------------------------------------------------
 # Code copy
 # ---------------------------------------------------------------------------------------
+post:
+  # Post word count
+  # Dependencies: hexo-wordcount (npm install hexo-wordcount)
+  # See: https://github.com/willin/hexo-wordcount
+  word_count:
+    enable: false
+    wordcount: false  # word count, one article
+    min2read: false   # time to read, one article
+
+  # Author label
+  author_label:
+    enable: false
+    auto: true  # if true, show Lv1, Lv2, Lv3... , If false, show custom label
+    # label array item can be one or more
+    custom_label_list: [ "Trainee", "Engineer", "Architect", "CTO", "BOSS" ]
+
+
+# ---------------------------------------------------------------------------------------
+# Code copy
+# ---------------------------------------------------------------------------------------
 code_copy:
   enable: true
   style: default        # values: default | mac
-
-side_tools:
-  enable: true
-
-back2top:
-  enable: true
 
 
 # ---------------------------------------------------------------------------------------
 # Table of Contents in the Sidebar
 # ---------------------------------------------------------------------------------------
 toc:
-  enable: false
+  enable: true
 
   # Automatically add list number to toc.
   number: false
@@ -117,23 +131,15 @@ toc:
   # If true, all level of TOC in a post will be displayed, rather than the activated part of it.
   expand_all: true
 
+  # If true, open TOC every time when you enter the article page
+  init_open: false
+
 
 # ---------------------------------------------------------------------------------------
 # Post copyright info
 # ---------------------------------------------------------------------------------------
 copyright_info:
   enable: true
-
-
-# ---------------------------------------------------------------------------------------
-# Post word count
-# Dependencies: hexo-wordcount
-# See: https://github.com/willin/hexo-wordcount
-# ---------------------------------------------------------------------------------------
-post_wordcount:
-  enable: false
-  wordcount: true  # word count, one article
-  min2read: false   # time to read, one article
 
 
 # ---------------------------------------------------------------------------------------
@@ -156,8 +162,6 @@ website_count:
 # ---------------------------------------------------------------------------------------
 local_search:
   enable: true
-  trigger: auto
-  unescape: false
   preload: false     # Preload the search data when the page loads
 
 
@@ -165,10 +169,12 @@ local_search:
 # Comment plugin
 # ---------------------------------------------------------------------------------------
 comment:
+  enable: true
+  use: valine  # values: valine | gitalk | twikoo
+
   # Valine
   # See: https://github.com/xCss/Valine
   valine:
-    enable: true
     appid: d1KhKhlbXdwPOvTr8nDAVU96-gzGzoHsz               # your leancloud application appid
     appkey: HTNn6DaX90N0i5crIPgymV3a              # your leancloud application appkey
     placeholder: Do not do evil.         # your placeholder
@@ -176,7 +182,6 @@ comment:
   # Gitalk
   # See: https://github.com/gitalk/gitalk
   gitalk:
-    enable: false
     github_id:             # GitHub repo owner
     repository:            # Repository name to store issues
     client_id:             # GitHub Application Client ID
@@ -185,7 +190,6 @@ comment:
   # Twikoo
   # See: https://github.com/imaegoo/twikoo
   twikoo:
-    enable: false
     env_id:                # Tencent Cloud environment id
     region:                # environment region. If select Guangzhou, fill in "ap-guangzhou".
 
@@ -197,10 +201,6 @@ comment:
 # ---------------------------------------------------------------------------------------
 rss:
   enable: true
-feed:
-  type: atom
-  path: atom.xml
-  limit: 20
 
 
 # ---------------------------------------------------------------------------------------
@@ -236,5 +236,4 @@ footer:
 # ---------------------------------------------------------------------------------------
 # Keep version (Please don't modify)
 # ---------------------------------------------------------------------------------------
-version: 3.3.2 Custom
-
+version: 3.4.0 Custom
