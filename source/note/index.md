@@ -6,6 +6,12 @@ comment: true
 
 ---
 
+Apple Music 年度歌单居然还有嵌入链接，看看效果。
+
+<iframe allow="autoplay *; encrypted-media *; fullscreen *" frameborder="0" height="450" style="width:100%;max-width:660px;overflow:hidden;background:transparent;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/us/playlist/replay-2020/pl.rp-a77RuXoazEAk"></iframe>
+
+---
+
 2021-01-27 10:23 PM
 
 `Golang` 作者之一对其他作者的音乐品味表示**遗憾**。
