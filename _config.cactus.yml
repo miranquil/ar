@@ -81,7 +81,7 @@ logo:
   enabled: true
   width: 50
   height: 50
-  url: /images/logo.bmp
+  url: /images/logo.png
   gravatar: false
   grayout: false
 
