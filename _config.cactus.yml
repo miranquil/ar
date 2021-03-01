@@ -10,12 +10,13 @@ projects_url: http://github.com/probberechts
 # Set the page direction to RTL or LTR. default is LTR. (if you set it 'rtl', the 'vazir' font will be loaded.)
 direction: ltr
 # Configure the navigation menu.
-# A pair 'Key: url' will result in a link to 'url' with the name 'Key' in the
+# A pair 'Key: url' will result n a link to 'url' with the name 'Key' in the
 # navigation menu. Optionally, you can add translations for the 'Key' in
 # languages/*.yml
 nav:
   home: /
   articles: /archives/
+  Categories: /categories/
   Note: /note/
   # projects: projects_url
 
@@ -33,7 +34,7 @@ social_links:
 
 # Customize the overview with displaying a tagcloud on the index page.
 # Options: https://hexo.io/docs/helpers.html#tagcloud
-tags_overview: false
+tags_overview: true
 
 # Customize the overview with the most recent blog posts on the index page.
 # Options:
