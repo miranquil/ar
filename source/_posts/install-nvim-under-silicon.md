@@ -1,9 +1,8 @@
 ---
-title: 在 Apple Silicon 设备中安装 Neovim
+title: 在 Apple M1 设备中安装 Neovim
 date: 2021-01-20 21:11:51
 tags:
   - Apple
-  - Silicon
 categories:
   - Experience
 ---
