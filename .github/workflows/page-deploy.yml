@@ -38,7 +38,7 @@ jobs:
 
       - name: Fetch Theme
         run: |
-          git clone -b custom git@github.com:miranquil/hexo-theme-cactus.git themes/cactus
+          git clone -b custom git@github.com:miranquil/hexo-theme-keep.git themes/keep
     
       - name: Deploy
         run: |
