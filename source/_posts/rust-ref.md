@@ -10,6 +10,8 @@ categories:
 
 参考文档：[ref - Rust](https://doc.rust-lang.org/std/keyword.ref.html)
 
+<!--more-->
+
 `ref` 用于在模式匹配中**借用**值而非夺走它的所有权，由于在 `match` 表达式中变量会被 *consumed*。**对于没有实现 `Copy trait` 的类型，若不使用 `ref` 会导致后续无法使用之前的变量。**
 
 > By default, identifier patterns bind a variable to a copy of or move from the matched value depending on whether the matched value implements `Copy`. 
