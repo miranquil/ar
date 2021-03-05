@@ -149,10 +149,10 @@ website_count:
   # busuanzi
   # See: http://ibruce.info/2015/04/04/busuanzi/
   busuanzi_count:
-    enable: true
-    site_uv: true
-    site_pv: true
-    page_pv: true
+    enable: false
+    site_uv: false
+    site_pv: false
+    page_pv: false
 
 
 # ---------------------------------------------------------------------------------------
@@ -230,10 +230,11 @@ pjax:
 # Footer settings
 # ---------------------------------------------------------------------------------------
 footer:
-  since: 2019
+  since: 2019      # the starting year of your website, Can be null
+  icp:             # ICP record number of your website, Can be null
 
 
 # ---------------------------------------------------------------------------------------
 # Keep version (Please don't modify)
 # ---------------------------------------------------------------------------------------
-version: 3.4.0 Custom
+version: 3.4.1 Custom
