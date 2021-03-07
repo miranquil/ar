@@ -1,5 +1,5 @@
 ---
-title: Rust By Example 笔记：ref 关键字与 & 的区别
+title: Rust By Example 笔记：ref 关键字与 & 的部分区别
 date: 2021-03-01 21:47:56
 tags:
     - Rust
