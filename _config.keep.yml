@@ -14,9 +14,24 @@ style:
   # Theme primary color
   primary_color: '#0066CC'
 
+
+  # Your blog website logo image
+  # You can use local image, image external link or don’t fill
+  # logo: /images/logo.svg
+  logo: 
+
   # Avatar (You can use local image or image external link)
   avatar: /avatar.bmp
 
+
+  # Font size, customize font size. (you don't usually have to fill)
+  # e.g. font_size: 18px
+  font_size:
+
+  # Font family, customize font family. (you don't usually have to fill)
+  # e.g. font_family: STKaiti, STSong, STHeiti
+  font_family:
+  
   # Favicon (You can use local image or image external link)
   favicon:
 
@@ -39,6 +54,14 @@ style:
     enable: false
     background_img: /images/bg.svg   # You can use local image or image external link
     description: Keep writing and Keep loving.
+
+    # If you want to customize the first screen font color, you can fill in here (e.g. "#0066CC")
+    # Otherwise use the theme default font color
+    font_color:
+
+    # If enable hitokoto, first screen description is different every time when you enter the site
+    hitokoto:
+      enable: false # Option values: true | false
 
   # Scroll style settings
   scroll:
@@ -95,6 +118,8 @@ home_article:
 # Code copy
 # ---------------------------------------------------------------------------------------
 post:
+  # Image align position in the post, Option values: left | center
+  img_align: left
   # Post word count
   # Dependencies: hexo-wordcount (npm install hexo-wordcount)
   # See: https://github.com/willin/hexo-wordcount
@@ -114,10 +139,9 @@ post:
 # ---------------------------------------------------------------------------------------
 # Code copy
 # ---------------------------------------------------------------------------------------
-code_copy:
-  enable: true
-  style: default        # values: default | mac
-
+code_block_tools:
+  enable: true     # Option values: true | false
+  style: default    # Option values: default | mac
 
 # ---------------------------------------------------------------------------------------
 # Table of Contents in the Sidebar
@@ -214,7 +238,7 @@ lazyload:
 # CDN
 # ---------------------------------------------------------------------------------------
 cdn:
-  enable: true
+  enable: false
   repository: miranquil/hexo-theme-keep
   branch: custom
 
@@ -237,4 +261,4 @@ footer:
 # ---------------------------------------------------------------------------------------
 # Keep version (Please don't modify)
 # ---------------------------------------------------------------------------------------
-version: 3.4.1 Custom
+version: 3.4.9 Custom
