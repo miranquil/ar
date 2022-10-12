@@ -2,6 +2,9 @@
 title: 220909 关于 Go 的 defer
 date: 2022-09-09 11:34:41
 tags:
+  - Golang
+categories:
+    - Algorithm & Programming
 ---
 
 业务中难免遇到这样的代码：
