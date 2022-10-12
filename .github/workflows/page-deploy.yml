@@ -20,7 +20,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: '12'
+          node-version: '18'
 
       - name: Setup Hexo
         env:
@@ -33,7 +33,7 @@ jobs:
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           git config --global user.email "miranquil@gmail.com"
           git config --global user.name "Miranquil"
-          npm install hexo-cli -g
+          npm install hexo-cli@4.3.0 -g
           npm install
 
       - name: Fetch Theme
