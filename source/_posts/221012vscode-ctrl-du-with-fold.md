@@ -11,7 +11,7 @@ categories:
 
 <!--more-->
 
-参考多个 Issues 发现这东西本质上源于 VSCode 内部 API 对于折叠后代码的翻页操作支持不够。
+参考多个 Issues 发现这个问题源于 VSCode 内部 API 对于折叠后代码的翻页操作支持不够。
 
 [prophetw](https://github.com/prophetw) 提供了一个思路：替换原本的 `<C-d>` 和 `<C-u>` 功能为连续指令输入：
 
