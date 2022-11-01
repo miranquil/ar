@@ -1,5 +1,5 @@
 ---
-title: 220909 关于 Go 的 defer
+title: 关于 Go 的 defer
 date: 2022-09-09 11:34:41
 tags:
   - Golang
