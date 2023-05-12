@@ -78,7 +78,7 @@ query := fmt.Sprintf("UPDATE %s SET", tableName)
 				stringValue = rawValues[i].(time.Time).Format("2006-01-02 15:04:05")
 			default:
 				strValue, ok := reflects.ParseNumberToString(rawValues[i])
-        // 这里不能直接写 stringValue 就极度的恶心好吧，想写还要声明一遍 ok 再把：=改成=！
+        // 这里不能直接写 stringValue 就极度的恶心好吧，想写还要声明一遍 ok 再把:=改成=！
 				if !ok {
 					return fmt.Errorf("unknown type: %T", rawValues[i])
 				}
