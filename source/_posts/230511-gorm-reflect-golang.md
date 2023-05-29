@@ -26,28 +26,28 @@ return db.Save(data).Error
 
 ```go
 func ParseNumberToString(n any) (result string, ok bool) {
-	var integer, decimal32, decimal64 bool
-	switch n.(type) {
-	// common
-	case int:
-		integer = true
-	// ...
-	case float32:
-		decimal32 = true
-	// ...
+    var integer, decimal32, decimal64 bool
+    switch n.(type) {
+    // common
+    case int:
+        integer = true
+    // ...
+    case float32:
+        decimal32 = true
+    // ...
 
-	if integer {
-		return fmt.Sprintf("%d", n), true
-	}
-	if decimal32 {
-		decimalValue, _ := n.(float32)
-		return strconv.FormatFloat(float64(decimalValue), 'f', -1, 32), true
-	}
-	if decimal64 {
-		decimalValue, _ := n.(float64)
-		return strconv.FormatFloat(decimalValue, 'f', -1, 64), true
-	}
-	return "", false
+    if integer {
+        return fmt.Sprintf("%d", n), true
+    }
+    if decimal32 {
+        decimalValue, _ := n.(float32)
+        return strconv.FormatFloat(float64(decimalValue), 'f', -1, 32), true
+    }
+    if decimal64 {
+        decimalValue, _ := n.(float64)
+        return strconv.FormatFloat(decimalValue, 'f', -1, 64), true
+    }
+    return "", false
 }
 ```
 
@@ -58,27 +58,27 @@ query := fmt.Sprintf("UPDATE %s SET", tableName)
 
 conditions := make([]string, 0, len(columnValuesMap))
 for column, rawValues := range columnValuesMap {
-	condition := fmt.Sprintf(" %s = CASE id ", column)
-	args := make([]string, 0, len(ids))
-	for i := 0; i != len(rawValues); i++ {
-		var stringValue string
-		switch rawValues[i].(type) {
-		case string:
-			stringValue = rawValues[i].(string)
-		case time.Time:
-			stringValue = rawValues[i].(time.Time).Format("2006-01-02 15:04:05")
-		default:
-			strValue, ok := reflects.ParseNumberToString(rawValues[i])
-			// 这里不能直接写 stringValue 就极度的恶心好吧，想写还要声明一遍 ok 再把：=改成=！
-			if !ok {
-				return fmt.Errorf("unknown type: %T", rawValues[i])
-			}
-			stringValue = strValue
-		}
-		args = append(args, fmt.Sprintf(" WHEN %d THEN %s", ids[i], stringValue))
-	}
-	condition += strings.Join(args, " ")
-	conditions = append(conditions, condition)
+    condition := fmt.Sprintf(" %s = CASE id ", column)
+    args := make([]string, 0, len(ids))
+    for i := 0; i != len(rawValues); i++ {
+        var stringValue string
+        switch rawValues[i].(type) {
+        case string:
+            stringValue = rawValues[i].(string)
+        case time.Time:
+            stringValue = rawValues[i].(time.Time).Format("2006-01-02 15:04:05")
+        default:
+            strValue, ok := reflects.ParseNumberToString(rawValues[i])
+            // 这里不能直接写 stringValue 就极度的恶心好吧，想写还要声明一遍 ok 再把：=改成=！
+            if !ok {
+                return fmt.Errorf("unknown type: %T", rawValues[i])
+            }
+            stringValue = strValue
+        }
+        args = append(args, fmt.Sprintf(" WHEN %d THEN %s", ids[i], stringValue))
+    }
+    condition += strings.Join(args, " ")
+    conditions = append(conditions, condition)
 }
 
 query += strings.Join(conditions, " END, ") + " END WHERE id IN (?)"
@@ -110,7 +110,7 @@ func (t Table) TableName() string {
 
 ```go
 func (t Table) TableName() string {
-  	stmt := &gorm.Statement{DB: DB}
+    stmt := &gorm.Statement{DB: DB}
     namer := stmt.NamingStrategy
     modelType := reflect.Indirect(t).Type()
     modelValue := reflect.New(modelType)
@@ -126,13 +126,13 @@ func (t Table) TableName() string {
 
 ```go
 func GetGormTableName[T any]() string {
-	var t T
-	stmt := &gorm.Statement{DB: DB}
-	namer := stmt.NamingStrategy
+    var t T
+    stmt := &gorm.Statement{DB: DB}
+    namer := stmt.NamingStrategy
 
-  tType := reflect.ValueOf(t).Type()
-  tTypeName := tType.Name()
-	return namer.TableName(tTypeName)
+    tType := reflect.ValueOf(t).Type()
+    tTypeName := tType.Name()
+    return namer.TableName(tTypeName)
 }
 ```
 
@@ -146,21 +146,21 @@ func GetGormTableName[T any]() string {
 
 ```go
 func GetGormTableName[T any]() string {
-	var t T
-	stmt := &gorm.Statement{DB: global.DB}
-	namer := stmt.NamingStrategy
+    var t T
+    stmt := &gorm.Statement{DB: global.DB}
+    namer := stmt.NamingStrategy
 
-	var tTypeName string
-	if reflect.ValueOf(t).Kind() == reflect.Ptr {
-		tElem := reflect.TypeOf(t).Elem()
-		newPtr := reflect.New(tElem)
-		tInstance := newPtr.Elem().Interface()
-		tTypeName = reflect.ValueOf(tInstance).Type().Name()
-	} else {
-		tType := reflect.ValueOf(t).Type()
-		tTypeName = tType.Name()
-	}
-	return namer.TableName(tTypeName)
+    var tTypeName string
+    if reflect.ValueOf(t).Kind() == reflect.Ptr {
+        tElem := reflect.TypeOf(t).Elem()
+        newPtr := reflect.New(tElem)
+        tInstance := newPtr.Elem().Interface()
+        tTypeName = reflect.ValueOf(tInstance).Type().Name()
+    } else {
+        tType := reflect.ValueOf(t).Type()
+        tTypeName = tType.Name()
+    }
+    return namer.TableName(tTypeName)
 }
 ```
 
@@ -168,28 +168,28 @@ func GetGormTableName[T any]() string {
 
 ```go
 func GetImplementedTableName[T any]() (result string, ok bool) {
-	var t T
-	var funcMayExist reflect.Value
-  // 这里也涉及对于方法接收者是否为指针类型的判断，如果接收者为指针，通过对象本身调用方法也会报错，那么直接把传入的对象取地址。
-	if reflect.ValueOf(t).Kind() != reflect.Ptr {
-		funcMayExist = reflect.ValueOf(&t).MethodByName("TableName")
-	} else {
+    var t T
+    var funcMayExist reflect.Value
+    // 这里也涉及对于方法接收者是否为指针类型的判断，如果接收者为指针，通过对象本身调用方法也会报错，那么直接把传入的对象取地址。
+    if reflect.ValueOf(t).Kind() != reflect.Ptr {
+        funcMayExist = reflect.ValueOf(&t).MethodByName("TableName")
+    } else {
     // 这里同样为传入的指针类型创建一个实例对象。
-		tType := reflect.TypeOf(t).Elem()
-		tPtr := reflect.New(tType)
-		instance := tPtr.Elem().Interface()
-		funcMayExist = reflect.ValueOf(instance).MethodByName("TableName")
-	}
-	if funcMayExist.IsValid() {
-		values := funcMayExist.Call(nil)
-		if len(values) != 0 {
-			if values[0].Kind() == reflect.String {
-				return values[0].String(), true
-			}
-		}
-	}
+        tType := reflect.TypeOf(t).Elem()
+        tPtr := reflect.New(tType)
+        instance := tPtr.Elem().Interface()
+        funcMayExist = reflect.ValueOf(instance).MethodByName("TableName")
+    }
+    if funcMayExist.IsValid() {
+        values := funcMayExist.Call(nil)
+        if len(values) != 0 {
+            if values[0].Kind() == reflect.String {
+                return values[0].String(), true
+            }
+        }
+    }
 
-	return "", false
+    return "", false
 }
 ```
 
