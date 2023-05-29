@@ -1,12 +1,3 @@
----
-title: 一次折腾 Golang 泛型、反射和 gorm 框架的记录
-date: 2023-05-11 17:30:49
-tags:
-  - Golang
-categories:
-  - Algorithm & Programming
----
-
 事情的起初是一个很常见的需求：批量更新多条记录的相同字段，每条记录对应的字段值不同因此无法批量 Update。看着没啥难度却没想到从开头到结束整整花了一天的时间，遂有此文。
 
 首先尝试了 gorm 自带的 `Save()`，按理说 gorm 本身会自动识别零值不去更新，这样直接创建一个实例数组挨个赋值后调 `Save()` 就可以了，如：
@@ -25,7 +16,7 @@ return db.Save(data).Error
 
 翻了半天 gorm 浅显易懂的文档压根没有关于`CASE WHEN THEN`的内容，讲真要不是 gorm 有 `Exec` 方法我都想考虑换 ORM……~~其实早就想换了~~
 
-实现时候又碰见了两个问题，一个是使用`UPDATE`的话需要往 SQL 中传入表名，如何获取表名需要一个通用的函数（不能指望每个表都手动实现`TableName()`），于是又花时间实现了一个通用的函数。~~具体内容足够再水一篇。~~
+实现时候又碰见了两个问题，一个是使用`UPDATE`的话需要往 SQL 中传入表名，如何获取表名需要一个通用的函数（不能指望每个表都手动实现`TableName()`），于是又花时间实现了一个通用的函数。~~具体内容足够再水一篇。~~ 另外就是需要一个通用的将数字转换为字符串的函数，把结果最后拼接成 SQL。
 
 ## SQL
 
@@ -40,10 +31,10 @@ func ParseNumberToString(n any) (result string, ok bool) {
 	// common
 	case int:
 		integer = true
-  // ...
+	// ...
 	case float32:
 		decimal32 = true
-  // ...
+	// ...
 
 	if integer {
 		return fmt.Sprintf("%d", n), true
@@ -65,32 +56,32 @@ func ParseNumberToString(n any) (result string, ok bool) {
 ```go
 query := fmt.Sprintf("UPDATE %s SET", tableName)
 
-	conditions := make([]string, 0, len(columnValuesMap))
-	for column, rawValues := range columnValuesMap {
-		condition := fmt.Sprintf(" %s = CASE id ", column)
-		args := make([]string, 0, len(ids))
-		for i := 0; i != len(rawValues); i++ {
-			var stringValue string
-			switch rawValues[i].(type) {
-			case string:
-				stringValue = rawValues[i].(string)
-			case time.Time:
-				stringValue = rawValues[i].(time.Time).Format("2006-01-02 15:04:05")
-			default:
-				strValue, ok := reflects.ParseNumberToString(rawValues[i])
-        // 这里不能直接写 stringValue 就极度的恶心好吧，想写还要声明一遍 ok 再把:=改成=！
-				if !ok {
-					return fmt.Errorf("unknown type: %T", rawValues[i])
-				}
-				stringValue = strValue
+conditions := make([]string, 0, len(columnValuesMap))
+for column, rawValues := range columnValuesMap {
+	condition := fmt.Sprintf(" %s = CASE id ", column)
+	args := make([]string, 0, len(ids))
+	for i := 0; i != len(rawValues); i++ {
+		var stringValue string
+		switch rawValues[i].(type) {
+		case string:
+			stringValue = rawValues[i].(string)
+		case time.Time:
+			stringValue = rawValues[i].(time.Time).Format("2006-01-02 15:04:05")
+		default:
+			strValue, ok := reflects.ParseNumberToString(rawValues[i])
+			// 这里不能直接写 stringValue 就极度的恶心好吧，想写还要声明一遍 ok 再把：=改成=！
+			if !ok {
+				return fmt.Errorf("unknown type: %T", rawValues[i])
 			}
-			args = append(args, fmt.Sprintf(" WHEN %d THEN %s", ids[i], stringValue))
+			stringValue = strValue
 		}
-		condition += strings.Join(args, " ")
-		conditions = append(conditions, condition)
+		args = append(args, fmt.Sprintf(" WHEN %d THEN %s", ids[i], stringValue))
 	}
+	condition += strings.Join(args, " ")
+	conditions = append(conditions, condition)
+}
 
-	query += strings.Join(conditions, " END, ") + " END WHERE id IN (?)"
+query += strings.Join(conditions, " END, ") + " END WHERE id IN (?)"
 ```
 
 处理一下可能的数据不合法情况如值和 id 数量不一样，字段名为空啥的就能顺利的拼接出 SQL 了。
