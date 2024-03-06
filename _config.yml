@@ -102,9 +102,12 @@ theme: keep
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: git
-  repository: git@github.com:miranquil/ar.git
-  branch: page
+  - type: git
+    repository: git@github.com:miranquil/ar.git
+    branch: page
+  - type: git
+    repository: git@gitee.com:miranquil/ar.git
+    branch: master
 
 # https://github.com/viko16/hexo-permalink-pinyin
 permalink_pinyin:
