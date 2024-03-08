@@ -5,7 +5,7 @@
 # Site
 title: Miranquil Garden
 subtitle:
-description: 有一点自己的思想
+description: 祈求，寻找
 author: Miranquil
 language: en-US
 timezone: Asia/Shanghai
@@ -105,9 +105,6 @@ deploy:
   - type: git
     repository: git@github.com:miranquil/ar.git
     branch: page
-  - type: git
-    repository: git@gitee.com:miranquil/ar.git
-    branch: master
 
 # https://github.com/viko16/hexo-permalink-pinyin
 permalink_pinyin:
