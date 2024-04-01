@@ -115,7 +115,7 @@ home:
     enable: true # show category in home page article block
   tag:
     enable: true # show tags in home page article block
-  post_datetime: updated    # Option values: updated | created
+  post_datetime: created    # Option values: updated | created
 
 # ---------------------------------------------------------------------------------------
 # Code copy
