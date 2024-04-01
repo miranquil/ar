@@ -5,6 +5,17 @@ base_info:
   title: Miranquil Garden
   author: Miranquil
   url: https://miranquil.com
+  # Theme primary color
+  primary_color: "#0066cc"
+
+  # Author avatar, You can use local image path or image link
+  avatar: /avatar.jpg
+
+  # Website LOGO, You can use local image path or image link
+  logo: /avatar.jpg
+
+  # Website favicon, You can use local image path or image link
+  favicon: /avatar.jpg
 
 # ---------------------------------------------------------------------------------------
 # Theme style settings
@@ -99,13 +110,12 @@ menu:
 # ---------------------------------------------------------------------------------------
 # Home page article block display settings
 # ---------------------------------------------------------------------------------------
-home_article:
+home:
   category:
     enable: true # show category in home page article block
-    limit: 3 # max number of categories shown in home page article block
   tag:
     enable: true # show tags in home page article block
-    limit: 5 # max number of tags shown in home page article block
+  post_datetime: updated    # Option values: updated | created
 
 # ---------------------------------------------------------------------------------------
 # Code copy
@@ -117,23 +127,33 @@ post:
   # Dependencies: hexo-wordcount (npm install hexo-wordcount)
   # See: https://github.com/willin/hexo-wordcount
   word_count:
-    enable: false
     wordcount: false # word count, one article
     min2read: false # time to read, one article
 
   # Author label
-  author_label:
+  author_badge:
     enable: false
-    auto: true # if true, show Lv1, Lv2, Lv3... , If false, show custom label
-    # label array item can be one or more
-    custom_label_list: ["Trainee", "Engineer", "Architect", "CTO", "BOSS"]
+    # If true, show Lv1, Lv2, Lv3 ...
+    # If false, show custom badge
+    level_badge: true    # Option values: true | false
+    # Custom badge array, You can be fill one or more item
+    custom_badge: ["One", "Two", "Three"]
 
-# ---------------------------------------------------------------------------------------
-# Code copy
-# ---------------------------------------------------------------------------------------
-code_block_tools:
-  enable: true # Option values: true | false
-  style: default # Option values: default | mac
+  # Post datetime
+  datetime_format: "YYYY-MM-DD HH:mm:ss"  # Datetime format. e.g. "YYYY-MM-DD HH:mm:ss"
+
+  # Post copyright info
+  copyright_info: true  # Option values: true | false
+
+  # Post share
+  share: false           # Option values: true | false
+
+code_block:
+  # Toolbar include: "code copy", "code block collapse" and "code language"
+  tools:
+    enable: true            # Option values: true | false
+    style: mac           # Option values: default | mac
+  highlight_theme: default   # Option values: default | obsidian
 
 # ---------------------------------------------------------------------------------------
 # Table of Contents in the Sidebar
@@ -150,11 +170,9 @@ toc:
   # If true, open TOC every time when you enter the article page
   init_open: false
 
-# ---------------------------------------------------------------------------------------
-# Post copyright info
-# ---------------------------------------------------------------------------------------
-copyright_info:
-  enable: true
+  # TOC layout on post page
+  layout: right      # Option values: left | right
+
 
 # ---------------------------------------------------------------------------------------
 # Website count
@@ -181,8 +199,8 @@ local_search:
 # Comment plugin
 # ---------------------------------------------------------------------------------------
 comment:
-  enable: false
-  use: valine # values: valine | gitalk | twikoo
+  enable: true
+  use: giscus
 
   # Valine
   # See: https://github.com/xCss/Valine
@@ -205,6 +223,17 @@ comment:
     env_id: # Tencent Cloud environment id
     region: # environment region. If select Guangzhou, fill in "ap-guangzhou".
 
+  # Giscus
+  # See: https://github.com/giscus/giscus
+  #      https://giscus.app
+  # Please generate your configuration items in https://giscus.app
+  giscus:
+    repo: miranquil/ar
+    repo_id: MDEwOlJlcG9zaXRvcnkzMjgzNTY0MzM=
+    category: Announcements    # Recommend use Announcements
+    category_id: DIC_kwDOE5JSUc4CeX0i
+    reactions_enabled: true   # Option values: true | false
+
 # ---------------------------------------------------------------------------------------
 # RSS
 # Dependencies: hexo-generator-feed
@@ -224,8 +253,6 @@ lazyload:
 # ---------------------------------------------------------------------------------------
 cdn:
   enable: false
-  repository: miranquil/hexo-theme-keep
-  branch: custom
 
 # ---------------------------------------------------------------------------------------
 # PJAX
@@ -234,13 +261,49 @@ pjax:
   enable: false
 
 # ---------------------------------------------------------------------------------------
-# Footer settings
+# Docs: https://keep-docs.xpoet.cn/basis/configuration-guide/footer.html
 # ---------------------------------------------------------------------------------------
 footer:
-  since: 2019 # the starting year of your website, Can be null
-  icp: # ICP record number of your website, Can be null
+  since: 2019           # The starting year of your website, Can be null
+  word_count: false     # Option values: true | false
+
+  icp:
+    enable: false                    # Option values: true | false
+    record_code:                     # ICP record code of your website
+    url: https://beian.miit.gov.cn   # Your ICP link url, Can be null
+
+  site_deploy:
+    enable: true        # Option values: true | false
+    provider: github     # Option values: github | vercel | netlify | gitee | aliyun | tencent_cloud | upyun
+    url:                 # Your deployment provider url, Can be null
+
+  # When the footer style is shields, you can customize the shields configuration
+  # See: https://shields.io
+  shields_style:
+    enable: false        # Option values: true | false
+    custom:
+      - link_url:        # Your link url, Can be null
+        img_url:         # Shields image url
+      # e.g.
+      # - link_url: https://github.com/XPoet/hexo-theme-keep
+      #   img_url: https://img.shields.io/badge/Hexo-Keep%20v3.7.3-blue?style=flat-square&logo=hexo
+      # - ...
+
 
 # ---------------------------------------------------------------------------------------
-# Keep version (Please don't modify)
+# Docs: https://keep-docs.xpoet.cn/basis/configuration-guide/inject.html
 # ---------------------------------------------------------------------------------------
-version: 3.4.9 Custom
+inject:
+  enable: false  # Option values: true | false
+  css:
+    -
+      # e.g.
+      # - /css/custom-1.css
+      # - /css/custom-2.css
+    # - ...
+  js:
+    -
+      # e.g.
+      # - /js/custom-1.js
+      # - /js/custom-2.js
+      # - ...
