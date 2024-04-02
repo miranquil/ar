@@ -58,7 +58,7 @@ jobs:
 
       - name: Fetch Theme
         run: |
-          git clone -b custom git@github.com:miranquil/hexo-theme-keep.git themes/keep
+          git clone -b master git@github.com:XPoet/hexo-theme-keep.git themes/keep
 
       - name: Deploy
         run: |
