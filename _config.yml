@@ -7,7 +7,7 @@ title: 金字塔笼罩下的鱼罐头
 subtitle:
 description: 祈求，寻找
 author: 金字塔之歌
-language: en-US
+language: en
 timezone: Asia/Shanghai
 
 # URL
@@ -43,13 +43,13 @@ render_drafts: false
 post_asset_folder: true
 relative_link: false
 future: true
-# highlight:
-#   enable: true
-#   line_number: true
-#   auto_detect: false
-#   tab_replace: ''
-#   wrap: true
-#   hljs: false
+highlight:
+  enable: true
+  line_number: true
+  auto_detect: false
+  tab_replace: ''
+  wrap: true
+  hljs: false
 prismjs:
   enable: false
   preprocess: true

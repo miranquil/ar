@@ -196,32 +196,47 @@ local_search:
   preload: false # Preload the search data when the page loads
 
 # ---------------------------------------------------------------------------------------
-# Comment plugin
+# Docs: https://keep-docs.xpoet.cn/basis/configuration-guide/comment.html
 # ---------------------------------------------------------------------------------------
 comment:
-  enable: true
-  use: giscus
+  enable: true   # Option values: true | false
+  use: giscus     # Option values: valine | gitalk | twikoo | waline | giscus | artalk | disqus
 
   # Valine
   # See: https://github.com/xCss/Valine
+  #      https://valine.js.org
   valine:
-    appid: d1KhKhlbXdwPOvTr8nDAVU96-gzGzoHsz # your leancloud application appid
-    appkey: HTNn6DaX90N0i5crIPgymV3a # your leancloud application appkey
-    placeholder: Do not do evil. # your placeholder
+    appid:           # Your leancloud application appid
+    appkey:          # Your leancloud application appkey
+    server_urls:     # Your Server URL
+    placeholder:     # Input box placeholder
 
   # Gitalk
   # See: https://github.com/gitalk/gitalk
+  #      https://gitalk.github.io
   gitalk:
-    github_id: # GitHub repo owner
-    repository: # Repository name to store issues
-    client_id: # GitHub Application Client ID
-    client_secret: # GitHub Application Client Secret
+    github_id:        # GitHub repo owner
+    github_admins:    # GitHub Admins (in Array type), optional
+    repository:       # Repository name to store issues
+    client_id:        # GitHub Application Client ID
+    client_secret:    # GitHub Application Client Secret
+    proxy:            # GitHub oauth request reverse proxy for CORS
 
   # Twikoo
   # See: https://github.com/imaegoo/twikoo
+  #      https://twikoo.js.org
   twikoo:
-    env_id: # Tencent Cloud environment id
-    region: # environment region. If select Guangzhou, fill in "ap-guangzhou".
+    env_id:          # Environment ID
+    region:          # Environment region, Can be null
+    version: 1.6.21  # Twikoo version, default use 1.6.21
+
+  # Waline
+  # See: https://github.com/walinejs/waline
+  #      https://waline.js.org/guide/get-started.html
+  waline:
+    server_url:     # Server URL
+    reaction: false # Post reactions, Option values: true | false
+    version: 2      # Waline version, default use v2
 
   # Giscus
   # See: https://github.com/giscus/giscus
@@ -233,6 +248,19 @@ comment:
     category: Announcements    # Recommend use Announcements
     category_id: DIC_kwDOE5JSUc4CeX0i
     reactions_enabled: true   # Option values: true | false
+
+  # Artalk
+  # See: https://github.com/ArtalkJS/Artalk
+  #      https://artalk.js.org
+  artalk:
+    server:                    # Server URL
+
+  # Disqus
+  # See: https://disqus.com/
+  disqus:
+    shortname:                 # Disqus Shortname
+
+
 
 # ---------------------------------------------------------------------------------------
 # RSS
