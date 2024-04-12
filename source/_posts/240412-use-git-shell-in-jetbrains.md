@@ -24,3 +24,9 @@ categories:
 果不尽然，在安装目录下发现一个 bin 文件夹，里面摆着 git 本尊和另外两个眼熟的东西……`sh` 和 `bash`，戳开发现就是想要的。
 
 于是加进 Goland，别忘了打上 `--login`参数，效果完美，又可以愉快的用习惯的 Unix-like 快捷键了。
+
+## Reference
+
+* [Difference between sh and Bash](https://stackoverflow.com/questions/5725296/difference-between-sh-and-bash)
+* [#!/bin/bash --login vs #!/bin/bash](https://stackoverflow.com/questions/25677790/bin-bash-login-vs-bin-bash)
+
