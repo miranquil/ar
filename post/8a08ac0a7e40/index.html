@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="借 官方文档 的话说：  functools 模块应用于高阶函数，即——参数或（和）返回值为其他函数的函数。通常来说，此模块的功能适用于所有可调用对象。  这里记录一些个人需求用到的内容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python functools 包的一些姿势">
+<meta property="og:url" content="https://miranquil.com/post/8a08ac0a7e40/">
+<meta property="og:site_name" content="Miranquil Garden">
+<meta property="og:description" content="借 官方文档 的话说：  functools 模块应用于高阶函数，即——参数或（和）返回值为其他函数的函数。通常来说，此模块的功能适用于所有可调用对象。  这里记录一些个人需求用到的内容。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-05-22T02:54:50.000Z">
+<meta property="article:modified_time" content="2024-06-18T11:36:57.861Z">
+<meta property="article:author" content="Miranquil">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Python functools 包的一些姿势</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Miranquil Garden" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/da7eee4e248d/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/ee84948e6845/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://miranquil.com/post/8a08ac0a7e40/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://miranquil.com/post/8a08ac0a7e40/&text=Python functools 包的一些姿势"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://miranquil.com/post/8a08ac0a7e40/&title=Python functools 包的一些姿势"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://miranquil.com/post/8a08ac0a7e40/&is_video=false&description=Python functools 包的一些姿势"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Python functools 包的一些姿势&body=Check out this article: https://miranquil.com/post/8a08ac0a7e40/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://miranquil.com/post/8a08ac0a7e40/&title=Python functools 包的一些姿势"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://miranquil.com/post/8a08ac0a7e40/&title=Python functools 包的一些姿势"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://miranquil.com/post/8a08ac0a7e40/&title=Python functools 包的一些姿势"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://miranquil.com/post/8a08ac0a7e40/&title=Python functools 包的一些姿势"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://miranquil.com/post/8a08ac0a7e40/&name=Python functools 包的一些姿势&description=&lt;p&gt;借 &lt;a href=&#34;https://docs.python.org/zh-cn/3.7/library/functools.html&#34;&gt;官方文档&lt;/a&gt; 的话说：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;functools 模块应用于高阶函数，即——参数或（和）返回值为其他函数的函数。通常来说，此模块的功能适用于所有可调用对象。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这里记录一些个人需求用到的内容。&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://miranquil.com/post/8a08ac0a7e40/&t=Python functools 包的一些姿势"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#functools-partial"><span class="toc-number">1.</span> <span class="toc-text">functools.partial</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Python functools 包的一些姿势
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Miranquil</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-05-22T02:54:50.000Z" class="dt-published" itemprop="datePublished">2019-05-22</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Algorithm-Programming/">Algorithm & Programming</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Python/" rel="tag">Python</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>借 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.7/library/functools.html">官方文档</a> 的话说：</p>
+<blockquote>
+<p>functools 模块应用于高阶函数，即——参数或（和）返回值为其他函数的函数。通常来说，此模块的功能适用于所有可调用对象。</p>
+</blockquote>
+<p>这里记录一些个人需求用到的内容。</p>
+<span id="more"></span>
+<h2 id="functools-partial"><a href="#functools-partial" class="headerlink" title="functools.partial"></a>functools.partial</h2><blockquote>
+<p>Return a new partial object which when called will behave like func called with the positional arguments args and keyword arguments keywords. If more arguments are supplied to the call, they are appended to args. If additional keyword arguments are supplied, they extend and override keywords.</p>
+</blockquote>
+<p>简单来说，partial 会返回一个“客制化”的对象，直接 call 会得到对应 func 执行的结果，其中传入的参数可以进行客制化。</p>
+<p>partial 的原理大概可以粗略的这样表示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">partial</span>(<span class="params">func, *args, **keywords</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">newfunc</span>(<span class="params">*fargs, **fkeywords</span>):</span><br><span class="line">        newkeywords = keywords.copy()</span><br><span class="line">        newkeywords.update(fkeywords)</span><br><span class="line">        <span class="keyword">return</span> func(*args, *fargs, **newkeywords)</span><br><span class="line">    <span class="comment"># 下面三行如果不明所以然可以直接无视</span></span><br><span class="line">    newfunc.func = func</span><br><span class="line">    newfunc.args = args</span><br><span class="line">    newfunc.keywords = keywords</span><br><span class="line">    <span class="keyword">return</span> newfunc</span><br></pre></td></tr></table></figure>
+
+<p>第一次看见带星号的有点迷糊？简单来说就是一个函数调用比如 <code>output(1, 2, c=3, d=4)</code>，这里 <em>func</em> 就是 <code>output</code>，<em>args</em> 就是 <code>(1, 2)</code>，<em>keywords</em> 就是字典 <code>&#123;&#39;c&#39;: 3, &#39;d&#39;: 4&#125;</code>。partial 函数会定义一个新的函数 <code>newfunc</code>。在调用 <code>newfunc</code> 时传入下列内容：</p>
+<ol>
+<li>调用 <code>newfunc</code> 时传入的没有指定参数名的参数，按照函数定义的参数表列赋值。</li>
+<li>使用 <code>partial</code> 时传入的没有指定参数名的参数，即上文中的 <em>args</em>，同样按照函数定义的参数表列赋值。</li>
+<li>使用 <code>partial</code> 时传入的指定变量名的参数，即上文中的 <em>keywords</em>，该参数表中如果存在第一步中赋过值的参数，该值会<strong>在该次操作时</strong>被 <em>keywords</em> 中的值覆盖。<br>另外传入参数个数不得超过原函数的参数个数（毕竟最后实质上还是执行了原参数）。</li>
+</ol>
+<p>还是太抽象？比如我有下面的定义：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">output</span>(<span class="params">a, b, c, d</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;a=&#123;&#125; b=&#123;&#125; c=&#123;&#125; d=&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(a, b, c, d))</span><br><span class="line"></span><br><span class="line">o1 = partial(output, <span class="number">1</span>)</span><br><span class="line">o2 = partial(output, d=<span class="number">4</span>)</span><br><span class="line">o3 = partial(output, b=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">o1(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 输出 a=1 b=2 c=3 d=4</span></span><br><span class="line">o2(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="comment"># 输出 a=1 b=2 c=3 d=4</span></span><br><span class="line">o3(<span class="number">1</span>, c=<span class="number">3</span>, d=<span class="number">4</span>)</span><br><span class="line"><span class="comment"># 输出 a=1 b=2 c=3 d=4</span></span><br><span class="line">o3(<span class="number">2</span>, b=<span class="number">3</span>, c=<span class="number">4</span>, d=<span class="number">5</span>)</span><br><span class="line"><span class="comment"># 输出 a=2 b=3 c=4 d=5</span></span><br><span class="line">o3(<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># TypeError: output() got multiple values for argument &#x27;b&#x27;</span></span><br><span class="line">o3(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># TypeError: output() got multiple values for argument &#x27;b&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意后面 o3 的例子。由于在参数表列位置第二的 b 变量被 partial 指定为 2，因此往后如果<strong>直接</strong>传入参数 c 和参数 d 的值而不指定参数名，则会由于重复对参数 b 赋值导致出错，如同函数定义时一样，默认参数永远靠后。</p>
+<p>另外参考上文中的第三条，<code>o3(2, b=3, c=4, d=5)</code>这步操作由于参数表指定了参数 b 的新值，因此即使在定义 o3 时指定了参数 b 的值为 2，新值 3 也会在执行时覆盖原有的定义（仅限本次操作，不影响下次调用 o3）。</p>
+<p>其实换一种角度更容易理解，以第四行 <code>o3(2, b=3, c=4, d=5)</code>举例。</p>
+<ol>
+<li>根据 o3 的定义，参数 b 的值为 2，其他参数未知。此时参数表为 {a:? b:2 c:? d:?}。</li>
+<li>依照原函数 output 的参数表顺序，传入未指定参数名的参数（只有一个 <code>2</code>，按顺序为参数 <code>a</code>）。此时参数表为 {a:2 b:2 c:? d:?}。</li>
+<li>传入其他<strong>已经指定参数名</strong>的参数，即 <code>(b=3, c=4, d=5)</code>。此时参数表中 b 的值被新值取代，其他参数也逐个更新。为 {a:2 b:3 c:4 d:5}。</li>
+<li>依照最新的参数表 {a:2 b:3 c:4 d:5}，将参数代入原函数 <code>output</code> 执行，即 <code>output(2, 3, 4, 5)</code>。</li>
+</ol>
+<p>以下是官方给的一个实践例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>basetwo = partial(<span class="built_in">int</span>, base=<span class="number">2</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>basetwo.__doc__ = <span class="string">&#x27;Convert base 2 string to an int.&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>basetwo(<span class="string">&#x27;10010&#x27;</span>)</span><br><span class="line"><span class="number">18</span></span><br></pre></td></tr></table></figure>
+
+<p>同样，若我们在调用的时候重新为 base 赋值，如<code>basetwo(&#39;10010&#39;, base=10)</code>，结果自然是 10010。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#functools-partial"><span class="toc-number">1.</span> <span class="toc-text">functools.partial</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://miranquil.com/post/8a08ac0a7e40/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://miranquil.com/post/8a08ac0a7e40/&text=Python functools 包的一些姿势"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://miranquil.com/post/8a08ac0a7e40/&title=Python functools 包的一些姿势"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://miranquil.com/post/8a08ac0a7e40/&is_video=false&description=Python functools 包的一些姿势"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Python functools 包的一些姿势&body=Check out this article: https://miranquil.com/post/8a08ac0a7e40/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://miranquil.com/post/8a08ac0a7e40/&title=Python functools 包的一些姿势"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://miranquil.com/post/8a08ac0a7e40/&title=Python functools 包的一些姿势"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://miranquil.com/post/8a08ac0a7e40/&title=Python functools 包的一些姿势"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://miranquil.com/post/8a08ac0a7e40/&title=Python functools 包的一些姿势"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://miranquil.com/post/8a08ac0a7e40/&name=Python functools 包的一些姿势&description=&lt;p&gt;借 &lt;a href=&#34;https://docs.python.org/zh-cn/3.7/library/functools.html&#34;&gt;官方文档&lt;/a&gt; 的话说：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;functools 模块应用于高阶函数，即——参数或（和）返回值为其他函数的函数。通常来说，此模块的功能适用于所有可调用对象。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这里记录一些个人需求用到的内容。&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://miranquil.com/post/8a08ac0a7e40/&t=Python functools 包的一些姿势"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2024
+    Miranquil
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

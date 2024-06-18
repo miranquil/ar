@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="最近在研究 pprof 性能测试，考虑到公司很多项目开发和测试环境都部署在内网，而 pprof 有诸多依赖 graphviz 别看了说的就是你，于是便打算用 Docker 封装一份 pprof 做成开箱即用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="制作一个 pprof 的 Docker 镜像">
+<meta property="og:url" content="https://miranquil.com/post/0189e7fd91e3/">
+<meta property="og:site_name" content="Miranquil Garden">
+<meta property="og:description" content="最近在研究 pprof 性能测试，考虑到公司很多项目开发和测试环境都部署在内网，而 pprof 有诸多依赖 graphviz 别看了说的就是你，于是便打算用 Docker 封装一份 pprof 做成开箱即用。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-03-01T09:01:29.000Z">
+<meta property="article:modified_time" content="2024-06-18T11:36:57.873Z">
+<meta property="article:author" content="Miranquil">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>制作一个 pprof 的 Docker 镜像</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Miranquil Garden" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/23fbca32e41b/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/142f8c515ee5/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://miranquil.com/post/0189e7fd91e3/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://miranquil.com/post/0189e7fd91e3/&text=制作一个 pprof 的 Docker 镜像"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://miranquil.com/post/0189e7fd91e3/&title=制作一个 pprof 的 Docker 镜像"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://miranquil.com/post/0189e7fd91e3/&is_video=false&description=制作一个 pprof 的 Docker 镜像"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=制作一个 pprof 的 Docker 镜像&body=Check out this article: https://miranquil.com/post/0189e7fd91e3/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://miranquil.com/post/0189e7fd91e3/&title=制作一个 pprof 的 Docker 镜像"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://miranquil.com/post/0189e7fd91e3/&title=制作一个 pprof 的 Docker 镜像"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://miranquil.com/post/0189e7fd91e3/&title=制作一个 pprof 的 Docker 镜像"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://miranquil.com/post/0189e7fd91e3/&title=制作一个 pprof 的 Docker 镜像"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://miranquil.com/post/0189e7fd91e3/&name=制作一个 pprof 的 Docker 镜像&description=&lt;p&gt;最近在研究 pprof 性能测试，考虑到公司很多项目开发和测试环境都部署在内网，而 pprof 有诸多依赖 &lt;del&gt;graphviz 别看了说的就是你&lt;/del&gt;，于是便打算用 Docker 封装一份 pprof 做成开箱即用。&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://miranquil.com/post/0189e7fd91e3/&t=制作一个 pprof 的 Docker 镜像"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%A0%E4%B8%AA%E5%9D%91"><span class="toc-number">1.</span> <span class="toc-text">几个坑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dockerfile"><span class="toc-number">2.</span> <span class="toc-text">Dockerfile</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        制作一个 pprof 的 Docker 镜像
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Miranquil</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-03-01T09:01:29.000Z" class="dt-published" itemprop="datePublished">2024-03-01</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Algorithm-Programming/">Algorithm & Programming</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Docker/" rel="tag">Docker</a>, <a class="p-category" href="/tags/Golang/" rel="tag">Golang</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>最近在研究 pprof 性能测试，考虑到公司很多项目开发和测试环境都部署在内网，而 pprof 有诸多依赖 <del>graphviz 别看了说的就是你</del>，于是便打算用 Docker 封装一份 pprof 做成开箱即用。</p>
+<span id="more"></span>
+
+<h2 id="几个坑"><a href="#几个坑" class="headerlink" title="几个坑"></a>几个坑</h2><ul>
+<li>导入镜像的 Go 与 Docker 宿主机架构保持一致<del>老生常谈</del></li>
+<li>graphviz 在 <code>Centos7</code> 中默认安装，但版本不够新，需要 <code>yum update</code> 后再次安装。<ul>
+<li>否则实际运行时会报 <code>Failed to execute dot. Is Graphviz installed? exec: &quot;dot&quot;: executable file not found in $PATH</code>，有点搞笑。</li>
+<li>好在 <code>CentOS</code> 下这东西安装比 <code>homebrew</code> 快多了，不过后者安装时没有和以前一样报依赖问题也是庆幸。</li>
+</ul>
+</li>
+<li>如果额外安装独立的 <code>pprof@latest</code> 注意路径。这东西会安装在当前用户目录的 <code>go/bin/</code> 下。</li>
+</ul>
+<h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> centos:<span class="number">7</span></span><br><span class="line"><span class="keyword">LABEL</span><span class="language-bash"> version=<span class="string">&quot;0.1&quot;</span> author=<span class="string">&quot;shijianning&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> yum update</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> yum install -y graphviz</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /root</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> go1.21.7.linux-amd64.tar.gz ./</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> tar -C /usr/local -xzf go1.21.7.linux-amd64.tar.gz</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">rm</span> go1.21.7.linux-amd64.tar.gz</span></span><br><span class="line"><span class="keyword">ENV</span> PATH=$PATH:/usr/local/go/bin</span><br><span class="line"><span class="keyword">ENV</span> GOPROXY=https://mirrors.aliyun.com/goproxy/</span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> [<span class="string">&quot;go&quot;</span>, <span class="string">&quot;env&quot;</span>, <span class="string">&quot;-w&quot;</span>, <span class="string">&quot;GO111MODULE=on&quot;</span>]</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> [<span class="string">&quot;go&quot;</span>, <span class="string">&quot;env&quot;</span>, <span class="string">&quot;-w&quot;</span>, <span class="string">&quot;GOPROXY=https://goproxy.cn,direct&quot;</span>]</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> [<span class="string">&quot;go&quot;</span>, <span class="string">&quot;install&quot;</span>, <span class="string">&quot;github.com/google/pprof@latest&quot;</span>]</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> [<span class="string">&quot;mv&quot;</span>, <span class="string">&quot;/root/go/bin/pprof&quot;</span>, <span class="string">&quot;/usr/local/go/bin/&quot;</span>]</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> [<span class="string">&quot;rm&quot;</span>, <span class="string">&quot;-rf&quot;</span>, <span class="string">&quot;/root/go&quot;</span>]</span></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> [<span class="string">&quot;pprof&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%A0%E4%B8%AA%E5%9D%91"><span class="toc-number">1.</span> <span class="toc-text">几个坑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dockerfile"><span class="toc-number">2.</span> <span class="toc-text">Dockerfile</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://miranquil.com/post/0189e7fd91e3/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://miranquil.com/post/0189e7fd91e3/&text=制作一个 pprof 的 Docker 镜像"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://miranquil.com/post/0189e7fd91e3/&title=制作一个 pprof 的 Docker 镜像"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://miranquil.com/post/0189e7fd91e3/&is_video=false&description=制作一个 pprof 的 Docker 镜像"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=制作一个 pprof 的 Docker 镜像&body=Check out this article: https://miranquil.com/post/0189e7fd91e3/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://miranquil.com/post/0189e7fd91e3/&title=制作一个 pprof 的 Docker 镜像"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://miranquil.com/post/0189e7fd91e3/&title=制作一个 pprof 的 Docker 镜像"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://miranquil.com/post/0189e7fd91e3/&title=制作一个 pprof 的 Docker 镜像"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://miranquil.com/post/0189e7fd91e3/&title=制作一个 pprof 的 Docker 镜像"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://miranquil.com/post/0189e7fd91e3/&name=制作一个 pprof 的 Docker 镜像&description=&lt;p&gt;最近在研究 pprof 性能测试，考虑到公司很多项目开发和测试环境都部署在内网，而 pprof 有诸多依赖 &lt;del&gt;graphviz 别看了说的就是你&lt;/del&gt;，于是便打算用 Docker 封装一份 pprof 做成开箱即用。&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://miranquil.com/post/0189e7fd91e3/&t=制作一个 pprof 的 Docker 镜像"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2024
+    Miranquil
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

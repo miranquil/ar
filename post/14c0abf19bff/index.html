@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="TL;DrSubpixel -&gt; Greyscale 2024-03-11 UPDATE: 乐，发现现在 macOS 下只剩下 Greyscale 一个选项了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿">
+<meta property="og:url" content="https://miranquil.com/post/14c0abf19bff/">
+<meta property="og:site_name" content="Miranquil Garden">
+<meta property="og:description" content="TL;DrSubpixel -&gt; Greyscale 2024-03-11 UPDATE: 乐，发现现在 macOS 下只剩下 Greyscale 一个选项了。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-03-07T02:54:10.000Z">
+<meta property="article:modified_time" content="2024-06-18T11:36:57.873Z">
+<meta property="article:author" content="Miranquil">
+<meta property="article:tag" content="macOS">
+<meta property="article:tag" content="Intellij">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Miranquil Garden" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/118eee612186/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/be4c1146ebbc/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://miranquil.com/post/14c0abf19bff/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://miranquil.com/post/14c0abf19bff/&text=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://miranquil.com/post/14c0abf19bff/&title=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://miranquil.com/post/14c0abf19bff/&is_video=false&description=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿&body=Check out this article: https://miranquil.com/post/14c0abf19bff/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://miranquil.com/post/14c0abf19bff/&title=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://miranquil.com/post/14c0abf19bff/&title=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://miranquil.com/post/14c0abf19bff/&title=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://miranquil.com/post/14c0abf19bff/&title=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://miranquil.com/post/14c0abf19bff/&name=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿&description=&lt;h2 id=&#34;TL-Dr&#34;&gt;&lt;a href=&#34;#TL-Dr&#34; class=&#34;headerlink&#34; title=&#34;TL;Dr&#34;&gt;&lt;/a&gt;TL;Dr&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Subpixel&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Greyscale&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;2024-03-11 UPDATE: 乐，发现现在 macOS 下只剩下 &lt;code&gt;Greyscale&lt;/code&gt; 一个选项了。&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://miranquil.com/post/14c0abf19bff/&t=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TL-Dr"><span class="toc-number">1.</span> <span class="toc-text">TL;Dr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">2.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A2%E5%AF%BB"><span class="toc-number">3.</span> <span class="toc-text">探寻</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Miranquil</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-03-07T02:54:10.000Z" class="dt-published" itemprop="datePublished">2021-03-07</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Experience/">Experience</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Intellij/" rel="tag">Intellij</a>, <a class="p-category" href="/tags/macOS/" rel="tag">macOS</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="TL-Dr"><a href="#TL-Dr" class="headerlink" title="TL;Dr"></a>TL;Dr</h2><p><strong>Subpixel</strong> -&gt; <strong>Greyscale</strong></p>
+<p>2024-03-11 UPDATE: 乐，发现现在 macOS 下只剩下 <code>Greyscale</code> 一个选项了。</p>
+<span id="more"></span>
+
+<p>换双拼后的第一篇文章，老实说还是不熟练。肌肉记忆的养成不是一天半天的事，不过似乎实际速度并没有慢到哪去。而且很神奇的现象是在手机上打得比在电脑上快不少，不知为何在手机键盘上脑子反应键位的速度要快那么些，很神奇，明明用的都是全键盘。</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>一直感觉最近 Clion 的体验不如 Sublime Text 舒服，可又说不出是哪。直到有一次闲得慌乱按 C-d C-u 才发现这滚动时候明显感觉有点卡顿，但又不是特别严重。奈何这种问题不发现则已，一发现就会被带入强迫症想要解决，遂有此文。</p>
+<p><del>什么没有慢到哪去……打字明显脑子跟不上手速</del></p>
+<h2 id="探寻"><a href="#探寻" class="headerlink" title="探寻"></a>探寻</h2><p>DuckDuckGo 一发，发现报告这个问题的人还不少。JetBrains 甚至还专门开了个 YouTrack，需要的可自行围观：<a target="_blank" rel="noopener" href="https://youtrack.jetbrains.com/issue/JBR-526">JBR-526</a>。翻了翻其中有说跟分辨率有关，有说和 <em>code lens</em> 的配置项有关（这东西有一说一我到现在没明白干嘛的），奈何测试了一下都不太有用。一直翻到有个老哥说更改抗锯齿可以解决，遂尝试。</p>
+<p>JetBrains 系 IDE 自带两个抗锯齿模式。<strong>Subpixel</strong> 和 <strong>Greyscale</strong>。这其中还分 IDE 的 UI 用的以及编辑器用的，而 IDE 默认为 <strong>Greyscale</strong>， 编辑器默认为 <strong>Subpixel</strong>。这二者区别我没有细究，单从视觉角度上看 <strong>Subpixel</strong> 相对来说字体更为圆润，视觉效果比 <strong>Greyscale</strong> 略粗一些。另外我手上没有别的系统无法测试，目前 macOS 下 IDE 只支持 Greyscale，但我好像有其他系统下同时支持两者的印象。</p>
+<p><del>这里顺便提一嘴，JetBrains 是唯一一个能在某爱国云桌面提供的辣眼睛画面下做到清晰平滑的。</del></p>
+<p>然而有个很特殊的情况是我目前用的 LG 4K 屏幕（HDR 关闭）的分辨率被我开了缩放，也就是把 4K 分辨率缩放至 2K 来提高清晰度（macOS 其实更狠，默认分辨率是缩到 1080P）。而这个情况下，这两种抗锯齿模式根本……看不出多大区别。</p>
+<p>于是乎，把 Editor 的抗锯齿也改成 <strong>Greyscale</strong> 圆满解决，实际的显示效果，字母感觉微微瘦了那么——一丝，稍微拉远点距离就看不出什么区别（实际上我已经离得很近了都只能勉强看出切换时的变化）。不过如果是用的显示器原生分辨率而非缩放的话，我测试了一下这两个区别还是相当明显，<strong>Subpixel</strong> 明显更顺眼。但悲哀的是，即使是原生分辨率下 <strong>Subpixel</strong> 还是会卡顿……</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>关于 <strong>Subpixel</strong> 次像素抗锯齿和 <strong>Greyscale</strong> 灰度抗锯齿，我去 6o 的 TG 群里问了一下，有大佬给了两篇科普文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://lvii.github.io/system/2018-09-26-setting-macos-mojave-font-rendering-from-grayscale-to-subpixel-antialiasing/">macOS Mojave 字体渲染由默认的灰度抗锯齿改回之前的次像素抗锯齿</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.thetype.com/2010/06/2619/">视觉分辨力与 Retina Display</a></li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TL-Dr"><span class="toc-number">1.</span> <span class="toc-text">TL;Dr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">2.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A2%E5%AF%BB"><span class="toc-number">3.</span> <span class="toc-text">探寻</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://miranquil.com/post/14c0abf19bff/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://miranquil.com/post/14c0abf19bff/&text=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://miranquil.com/post/14c0abf19bff/&title=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://miranquil.com/post/14c0abf19bff/&is_video=false&description=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿&body=Check out this article: https://miranquil.com/post/14c0abf19bff/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://miranquil.com/post/14c0abf19bff/&title=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://miranquil.com/post/14c0abf19bff/&title=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://miranquil.com/post/14c0abf19bff/&title=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://miranquil.com/post/14c0abf19bff/&title=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://miranquil.com/post/14c0abf19bff/&name=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿&description=&lt;h2 id=&#34;TL-Dr&#34;&gt;&lt;a href=&#34;#TL-Dr&#34; class=&#34;headerlink&#34; title=&#34;TL;Dr&#34;&gt;&lt;/a&gt;TL;Dr&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Subpixel&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Greyscale&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;2024-03-11 UPDATE: 乐，发现现在 macOS 下只剩下 &lt;code&gt;Greyscale&lt;/code&gt; 一个选项了。&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://miranquil.com/post/14c0abf19bff/&t=解决 Intellij 系 IDE 在 macOS 下滚动屏幕卡顿"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2024
+    Miranquil
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

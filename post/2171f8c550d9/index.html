@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="游戏链接 16 岁以下不要再玩手机了！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python+Selenium 入门之在线测眼力">
+<meta property="og:url" content="https://miranquil.com/post/2171f8c550d9/">
+<meta property="og:site_name" content="Miranquil Garden">
+<meta property="og:description" content="游戏链接 16 岁以下不要再玩手机了！">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://miranquil.com/post/2171f8c550d9/1.jpg">
+<meta property="article:published_time" content="2019-05-03T03:54:43.000Z">
+<meta property="article:modified_time" content="2024-06-18T11:36:57.857Z">
+<meta property="article:author" content="Miranquil">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Selenium">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://miranquil.com/post/2171f8c550d9/1.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Python+Selenium 入门之在线测眼力</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Miranquil Garden" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/ee84948e6845/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/0d41cd9d95ab/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://miranquil.com/post/2171f8c550d9/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://miranquil.com/post/2171f8c550d9/&text=Python+Selenium 入门之在线测眼力"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://miranquil.com/post/2171f8c550d9/&title=Python+Selenium 入门之在线测眼力"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://miranquil.com/post/2171f8c550d9/&is_video=false&description=Python+Selenium 入门之在线测眼力"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Python+Selenium 入门之在线测眼力&body=Check out this article: https://miranquil.com/post/2171f8c550d9/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://miranquil.com/post/2171f8c550d9/&title=Python+Selenium 入门之在线测眼力"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://miranquil.com/post/2171f8c550d9/&title=Python+Selenium 入门之在线测眼力"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://miranquil.com/post/2171f8c550d9/&title=Python+Selenium 入门之在线测眼力"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://miranquil.com/post/2171f8c550d9/&title=Python+Selenium 入门之在线测眼力"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://miranquil.com/post/2171f8c550d9/&name=Python+Selenium 入门之在线测眼力&description=&lt;p&gt;&lt;a href=&#34;http://m.xiaoxineye.com/wxaward/html5/games/eye/index.html&#34;&gt;游戏链接&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;16 岁以下不要再玩手机了！&lt;/del&gt;&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://miranquil.com/post/2171f8c550d9/&t=Python+Selenium 入门之在线测眼力"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Python+Selenium 入门之在线测眼力
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Miranquil</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-05-03T03:54:43.000Z" class="dt-published" itemprop="datePublished">2019-05-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Algorithm-Programming/">Algorithm & Programming</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Python/" rel="tag">Python</a>, <a class="p-category" href="/tags/Selenium/" rel="tag">Selenium</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><a target="_blank" rel="noopener" href="http://m.xiaoxineye.com/wxaward/html5/games/eye/index.html">游戏链接</a></p>
+<p><del>16 岁以下不要再玩手机了！</del></p>
+<span id="more"></span>
+
+<p>偶尔看到这个游戏，玩到二十多关发现实在有点变态，但又不甘心，遂产生了破解的念头。一开始是想直接在屏幕上标点标出颜色不一样的格子，但后来想起屏幕画点需要调用系统 API，Mac 下开发的 win 不能用…… 只好换思路。</p>
+<p>之后想的是用 PIL 截屏然后分析图像文件，但又总觉得这样做速度会太慢而且杀鸡焉用牛刀。F12 看了下这页面也就是拿 JS 生成了一大堆 HTML 色块，直接读源码就可以分析，那这样的话用类似爬虫的思路不就行了？</p>
+<p>单纯的 web 爬虫肯定行不通，因为要模拟点击进入下一关，而每关的色块和答案位置都是不一样的，因此最好的解决方案还是模拟浏览器，遂直接用 Selenium+Safari。</p>
+<p>整体还是比较简单，都是一些 Selenium 的基本操作，是个适合入门练手的站。</p>
+<p>代码如下，Gist<a target="_blank" rel="noopener" href="https://gist.github.com/yorushika/90490dc0f42a6fef705d9208e0dd6a73">在这里</a>。相对于 Gist 里的内容加了一些说明注释。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.keys <span class="keyword">import</span> Keys</span><br><span class="line"></span><br><span class="line">browser = webdriver.Safari()</span><br><span class="line">browser.set_window_size(<span class="number">1024</span>, <span class="number">768</span>) <span class="comment"># 测试了下大概 1024x768 是最低的能让页面显示完整的 “常见” 尺寸了，大屏党无视。</span></span><br><span class="line">browser.get(<span class="string">&#x27;http://m.xiaoxineye.com/wxaward/html5/games/eye/index.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Game start</span></span><br><span class="line">start_btn = browser.find_element_by_css_selector(<span class="string">&#x27;button&#x27;</span>)</span><br><span class="line">start_btn.send_keys(Keys.RETURN)    <span class="comment"># 这里其实也可以用 click，如下。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    color_box = browser.find_element_by_xpath(<span class="string">&#x27;//div[@id=&quot;box&quot;]&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> color_box:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;No more boxes.&quot;</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    box_list = color_box.find_elements_by_xpath(<span class="string">&#x27;./span&#x27;</span>)</span><br><span class="line">    color_num_dict = &#123;&#125;</span><br><span class="line">    target_box_dict = &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 查找不同色块，算法是简单的记录出现次数，在发现不同色块出现后只要已经统计的色块数大于 2 即可确定。这里数据结构略繁琐，我觉得应该有更优的做法，望补充。</span></span><br><span class="line">    <span class="keyword">for</span> index, box <span class="keyword">in</span> <span class="built_in">enumerate</span>(box_list):</span><br><span class="line">        color = box.get_attribute(<span class="string">&#x27;style&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> color_num_dict.get(color):</span><br><span class="line">            color_num_dict[color] += <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(color_num_dict.keys()) == <span class="number">2</span> <span class="keyword">and</span> color_num_dict[color] &gt;= <span class="number">2</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            color_num_dict[color] = <span class="number">1</span></span><br><span class="line">        target_box_dict[color] = box</span><br><span class="line"></span><br><span class="line">    target_box = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> color_num_dict.keys():</span><br><span class="line">        <span class="keyword">if</span> color_num_dict[key] == <span class="number">1</span>:</span><br><span class="line">            target_box = target_box_dict[key]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> target_box:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    target_box.click()  <span class="comment"># 简单的 click() 动作就好，有趣的是在这里用 keys.RETURN() 是行不通的。初步推断发送回车只适合能用 tab 键定位（虚线括住）的按钮，而对于加了 JS 点击事件的非按钮元素行不通。</span></span><br></pre></td></tr></table></figure>
+
+<p>大概测试了几次，最好成绩是 407 分🦅。</p>
+<img src="/post/2171f8c550d9/1.jpg" class="">
+
+<p>这个游戏后期的颜色差异个人认为已经超过了肉眼感知极限。第 22 关开始不同色块的 RGB 值每项仅仅差了 10，如 <code>(108, 198, 199), (118, 208, 209)</code>;42 关开始成了 8，52 关开始到 400 + 关更是降到了 5. 绝大部分人都是卡在了一般的屏幕就已经显示不出差别的 22 关，而 52 关开始几乎不可能认出来，况且 60s 的时间限制也让手慢的人不可能到更高关卡。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://miranquil.com/post/2171f8c550d9/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://miranquil.com/post/2171f8c550d9/&text=Python+Selenium 入门之在线测眼力"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://miranquil.com/post/2171f8c550d9/&title=Python+Selenium 入门之在线测眼力"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://miranquil.com/post/2171f8c550d9/&is_video=false&description=Python+Selenium 入门之在线测眼力"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Python+Selenium 入门之在线测眼力&body=Check out this article: https://miranquil.com/post/2171f8c550d9/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://miranquil.com/post/2171f8c550d9/&title=Python+Selenium 入门之在线测眼力"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://miranquil.com/post/2171f8c550d9/&title=Python+Selenium 入门之在线测眼力"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://miranquil.com/post/2171f8c550d9/&title=Python+Selenium 入门之在线测眼力"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://miranquil.com/post/2171f8c550d9/&title=Python+Selenium 入门之在线测眼力"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://miranquil.com/post/2171f8c550d9/&name=Python+Selenium 入门之在线测眼力&description=&lt;p&gt;&lt;a href=&#34;http://m.xiaoxineye.com/wxaward/html5/games/eye/index.html&#34;&gt;游戏链接&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;16 岁以下不要再玩手机了！&lt;/del&gt;&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://miranquil.com/post/2171f8c550d9/&t=Python+Selenium 入门之在线测眼力"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2024
+    Miranquil
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

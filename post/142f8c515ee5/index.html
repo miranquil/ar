@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="事情的起初是一个很常见的需求：批量更新多条记录的相同字段，每条记录对应的字段值不同因此无法批量 Update。看着没啥难度却没想到从开头到结束整整花了一天的时间，遂有此文。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一次折腾 Golang 反射和 Gorm 的经历">
+<meta property="og:url" content="https://miranquil.com/post/142f8c515ee5/">
+<meta property="og:site_name" content="Miranquil Garden">
+<meta property="og:description" content="事情的起初是一个很常见的需求：批量更新多条记录的相同字段，每条记录对应的字段值不同因此无法批量 Update。看着没啥难度却没想到从开头到结束整整花了一天的时间，遂有此文。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-05-11T09:01:29.000Z">
+<meta property="article:modified_time" content="2024-06-18T11:36:57.873Z">
+<meta property="article:author" content="Miranquil">
+<meta property="article:tag" content="Golang">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>一次折腾 Golang 反射和 Gorm 的经历</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Miranquil Garden" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/0189e7fd91e3/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/c401b8165e00/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://miranquil.com/post/142f8c515ee5/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://miranquil.com/post/142f8c515ee5/&text=一次折腾 Golang 反射和 Gorm 的经历"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://miranquil.com/post/142f8c515ee5/&title=一次折腾 Golang 反射和 Gorm 的经历"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://miranquil.com/post/142f8c515ee5/&is_video=false&description=一次折腾 Golang 反射和 Gorm 的经历"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=一次折腾 Golang 反射和 Gorm 的经历&body=Check out this article: https://miranquil.com/post/142f8c515ee5/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://miranquil.com/post/142f8c515ee5/&title=一次折腾 Golang 反射和 Gorm 的经历"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://miranquil.com/post/142f8c515ee5/&title=一次折腾 Golang 反射和 Gorm 的经历"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://miranquil.com/post/142f8c515ee5/&title=一次折腾 Golang 反射和 Gorm 的经历"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://miranquil.com/post/142f8c515ee5/&title=一次折腾 Golang 反射和 Gorm 的经历"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://miranquil.com/post/142f8c515ee5/&name=一次折腾 Golang 反射和 Gorm 的经历&description=&lt;p&gt;事情的起初是一个很常见的需求：批量更新多条记录的相同字段，每条记录对应的字段值不同因此无法批量 Update。看着没啥难度却没想到从开头到结束整整花了一天的时间，遂有此文。&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://miranquil.com/post/142f8c515ee5/&t=一次折腾 Golang 反射和 Gorm 的经历"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL"><span class="toc-number">1.</span> <span class="toc-text">SQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TableName"><span class="toc-number">2.</span> <span class="toc-text">TableName</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        一次折腾 Golang 反射和 Gorm 的经历
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Miranquil</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-05-11T09:01:29.000Z" class="dt-published" itemprop="datePublished">2023-05-11</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Algorithm-Programming/">Algorithm & Programming</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Golang/" rel="tag">Golang</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>事情的起初是一个很常见的需求：批量更新多条记录的相同字段，每条记录对应的字段值不同因此无法批量 Update。看着没啥难度却没想到从开头到结束整整花了一天的时间，遂有此文。</p>
+<span id="more"></span>
+
+<p>首先尝试了 gorm 自带的 <code>Save()</code>，按理说 gorm 本身会自动识别零值不去更新，这样直接创建一个实例数组挨个赋值后调 <code>Save()</code> 就可以了，如：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">data := <span class="built_in">make</span>([]records, <span class="number">0</span>, <span class="built_in">len</span>(n))</span><br><span class="line"><span class="keyword">for</span> i:=<span class="number">0</span>; i!=<span class="built_in">len</span>(data); i++ &#123;</span><br><span class="line">    data[i].column = values[i]</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> db.Save(data).Error</span><br></pre></td></tr></table></figure>
+
+<p>现实很骨感：<code>Save()</code> 只支持类似思路的<strong>单个</strong>字段更新，敢往里塞数组这货会直接批量创建记录……</p>
+<p>重新整理了一下思路，想到可以手搓 SQL 用 <code>UPDATE</code> 的 <code>CASE WHEN THEN</code> 语法来批量更新，控制一下每次更新的记录数量就行了。</p>
+<p>翻了半天 gorm 浅显易懂的文档压根没有关于<code>CASE WHEN THEN</code>的内容，讲真要不是 gorm 有 <code>Exec</code> 方法我都想考虑换 ORM……<del>其实早就想换了</del></p>
+<p>实现时候又碰见了两个问题，一个是使用<code>UPDATE</code>的话需要往 SQL 中传入表名，如何获取表名需要一个通用的函数（不能指望每个表都手动实现<code>TableName()</code>），于是又花时间实现了一个通用的函数。<del>具体内容足够再水一篇。</del> 另外就是需要一个通用的将数字转换为字符串的函数，把结果最后拼接成 SQL。</p>
+<h2 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h2><p>麻烦的点主要是需要识别每个新值的类型，如果是字符串或者<code>Time</code>的话需要往 SQL 里塞引号，于是写了个根据反射判断类型并转为字符串的函数：</p>
+<p>这里要注意一下不能简单的用<code>%v</code>或<code>%f</code>去格式化打印浮点型，因为结果可能是科学记数法。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ParseNumberToString</span><span class="params">(n any)</span></span> (result <span class="type">string</span>, ok <span class="type">bool</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> integer, decimal32, decimal64 <span class="type">bool</span></span><br><span class="line">    <span class="keyword">switch</span> n.(<span class="keyword">type</span>) &#123;</span><br><span class="line">    <span class="comment">// common</span></span><br><span class="line">    <span class="keyword">case</span> <span class="type">int</span>:</span><br><span class="line">        integer = <span class="literal">true</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">case</span> <span class="type">float32</span>:</span><br><span class="line">        decimal32 = <span class="literal">true</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> integer &#123;</span><br><span class="line">        <span class="keyword">return</span> fmt.Sprintf(<span class="string">&quot;%d&quot;</span>, n), <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> decimal32 &#123;</span><br><span class="line">        decimalValue, _ := n.(<span class="type">float32</span>)</span><br><span class="line">        <span class="keyword">return</span> strconv.FormatFloat(<span class="type">float64</span>(decimalValue), <span class="string">&#x27;f&#x27;</span>, <span class="number">-1</span>, <span class="number">32</span>), <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> decimal64 &#123;</span><br><span class="line">        decimalValue, _ := n.(<span class="type">float64</span>)</span><br><span class="line">        <span class="keyword">return</span> strconv.FormatFloat(decimalValue, <span class="string">&#x27;f&#x27;</span>, <span class="number">-1</span>, <span class="number">64</span>), <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&quot;</span>, <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在拼接 SQL 的时候检查是否是字符串 or <code>Time</code>，如果两者都不是直接调它就行了。主要内容大概这样：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">query := fmt.Sprintf(<span class="string">&quot;UPDATE %s SET&quot;</span>, tableName)</span><br><span class="line"></span><br><span class="line">conditions := <span class="built_in">make</span>([]<span class="type">string</span>, <span class="number">0</span>, <span class="built_in">len</span>(columnValuesMap))</span><br><span class="line"><span class="keyword">for</span> column, rawValues := <span class="keyword">range</span> columnValuesMap &#123;</span><br><span class="line">    condition := fmt.Sprintf(<span class="string">&quot; %s = CASE id &quot;</span>, column)</span><br><span class="line">    args := <span class="built_in">make</span>([]<span class="type">string</span>, <span class="number">0</span>, <span class="built_in">len</span>(ids))</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i != <span class="built_in">len</span>(rawValues); i++ &#123;</span><br><span class="line">        <span class="keyword">var</span> stringValue <span class="type">string</span></span><br><span class="line">        <span class="keyword">switch</span> rawValues[i].(<span class="keyword">type</span>) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="type">string</span>:</span><br><span class="line">            stringValue = rawValues[i].(<span class="type">string</span>)</span><br><span class="line">        <span class="keyword">case</span> time.Time:</span><br><span class="line">            stringValue = rawValues[i].(time.Time).Format(<span class="string">&quot;2006-01-02 15:04:05&quot;</span>)</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            strValue, ok := reflects.ParseNumberToString(rawValues[i])</span><br><span class="line">            <span class="comment">// 这里不能直接写 stringValue 就极度的恶心好吧，想写还要声明一遍 ok 再把：=改成=！</span></span><br><span class="line">            <span class="keyword">if</span> !ok &#123;</span><br><span class="line">                <span class="keyword">return</span> fmt.Errorf(<span class="string">&quot;unknown type: %T&quot;</span>, rawValues[i])</span><br><span class="line">            &#125;</span><br><span class="line">            stringValue = strValue</span><br><span class="line">        &#125;</span><br><span class="line">        args = <span class="built_in">append</span>(args, fmt.Sprintf(<span class="string">&quot; WHEN %d THEN %s&quot;</span>, ids[i], stringValue))</span><br><span class="line">    &#125;</span><br><span class="line">    condition += strings.Join(args, <span class="string">&quot; &quot;</span>)</span><br><span class="line">    conditions = <span class="built_in">append</span>(conditions, condition)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">query += strings.Join(conditions, <span class="string">&quot; END, &quot;</span>) + <span class="string">&quot; END WHERE id IN (?)&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>处理一下可能的数据不合法情况如值和 id 数量不一样，字段名为空啥的就能顺利的拼接出 SQL 了。</p>
+<p>拼 SQL 没花多少功夫，真正费时间的在于那个生成表名的函数……</p>
+<h2 id="TableName"><a href="#TableName" class="headerlink" title="TableName"></a>TableName</h2><p>gorm 这个框架本身拥有一套自己生成表名的函数，并定义了一个<code>Tabler</code>接口，其中包含一个<code>TableName() string</code>方法来返回表名。用户可以自行实现<code>TableName()</code>，若未实现则会使用 gorm 自己的规则。</p>
+<p>如果想不破坏现有的逻辑，那就只能把 gorm 自己的规则翻出来。stackoverflow 上有人也问过 <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/51999441/how-to-get-a-table-name-from-a-model-in-gorm">类似的问题</a>，稍加查询得到了如下代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t Table)</span></span> TableName() <span class="type">string</span> &#123;</span><br><span class="line">    stmt := &amp;gorm.Statement&#123;DB: DB&#125;</span><br><span class="line">    stmt.Parse(t)</span><br><span class="line">    <span class="keyword">return</span> stmt.Schema.Table</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为项目有些表已经手动实现了 TableName，所以想着不破坏现有逻辑的情况下尝试直接为每个表都会继承的基础类添上这个方法。</p>
+<p>但陷阱在于，<code>stmt.Parse(t)</code> 本身也会调用 <code>TableName</code>，于是 test 的时候直接真的 stack overflow 了……</p>
+<p>后来查阅了一下<code>Parse</code>到底在干嘛，发现还有第二种方案：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t Table)</span></span> TableName() <span class="type">string</span> &#123;</span><br><span class="line">    stmt := &amp;gorm.Statement&#123;DB: DB&#125;</span><br><span class="line">    namer := stmt.NamingStrategy</span><br><span class="line">    modelType := reflect.Indirect(t).Type()</span><br><span class="line">    modelValue := reflect.New(modelType)</span><br><span class="line">    <span class="keyword">return</span> namer.TableName(modelType.Name())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>完美！直接把<code>Parse</code>的大部分过程跳过了！</p>
+<p>然而妄想给基础类实现这个方法会导致传入的 modelType 永远都是基础类，于是每个表的 TableName 都成了<code>base_model</code>……</p>
+<p>无奈只能写一个往里传实际类型的。由于之前为了统一数据库逻辑，把所有数据库相关的表方法都改成了泛型函数，于是也要整一个泛型版出来。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetGormTableName</span>[<span class="title">T</span> <span class="title">any</span>]<span class="params">()</span></span> <span class="type">string</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> t T</span><br><span class="line">    stmt := &amp;gorm.Statement&#123;DB: DB&#125;</span><br><span class="line">    namer := stmt.NamingStrategy</span><br><span class="line"></span><br><span class="line">    tType := reflect.ValueOf(t).Type()</span><br><span class="line">    tTypeName := tType.Name()</span><br><span class="line">    <span class="keyword">return</span> namer.TableName(tTypeName)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看起来不错，唯一可惜就是不能通过方法调用。</p>
+<p>然而又在测试时候发现了问题：泛型会直接把 T 的类型带入函数（废话），这就导致如果 T 是一个指针类型，那么<code>var t T</code>本质上直接创建了一个空指针，然后把这玩意给<code>reflect.ValueOf()</code>会直接 panic……</p>
+<p>虽然应该没有人吃饱了撑的写<code>GetGormTableName[*Table]()</code>，但就怕有人在今天这种日子给他打了 50。于是……</p>
+<p>通过<code>reflect.Type</code>的<code>Elem()</code>方法可以拿到指针指向的元素类型，再用<code>reflect.New(elem)</code>可以创建一个新的指向该类型的指针，最后用<code>Elem().Interface()</code>就可以获取对应的实例了。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetGormTableName</span>[<span class="title">T</span> <span class="title">any</span>]<span class="params">()</span></span> <span class="type">string</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> t T</span><br><span class="line">    stmt := &amp;gorm.Statement&#123;DB: global.DB&#125;</span><br><span class="line">    namer := stmt.NamingStrategy</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> tTypeName <span class="type">string</span></span><br><span class="line">    <span class="keyword">if</span> reflect.ValueOf(t).Kind() == reflect.Ptr &#123;</span><br><span class="line">        tElem := reflect.TypeOf(t).Elem()</span><br><span class="line">        newPtr := reflect.New(tElem)</span><br><span class="line">        tInstance := newPtr.Elem().Interface()</span><br><span class="line">        tTypeName = reflect.ValueOf(tInstance).Type().Name()</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        tType := reflect.ValueOf(t).Type()</span><br><span class="line">        tTypeName = tType.Name()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> namer.TableName(tTypeName)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>顺便还写了一个判断当前类型是否拥有<code>TableName()</code>方法的函数，如果有的话直接返回对应的值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetImplementedTableName</span>[<span class="title">T</span> <span class="title">any</span>]<span class="params">()</span></span> (result <span class="type">string</span>, ok <span class="type">bool</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> t T</span><br><span class="line">    <span class="keyword">var</span> funcMayExist reflect.Value</span><br><span class="line">    <span class="comment">// 这里也涉及对于方法接收者是否为指针类型的判断，如果接收者为指针，通过对象本身调用方法也会报错，那么直接把传入的对象取地址。</span></span><br><span class="line">    <span class="keyword">if</span> reflect.ValueOf(t).Kind() != reflect.Ptr &#123;</span><br><span class="line">        funcMayExist = reflect.ValueOf(&amp;t).MethodByName(<span class="string">&quot;TableName&quot;</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 这里同样为传入的指针类型创建一个实例对象。</span></span><br><span class="line">        tType := reflect.TypeOf(t).Elem()</span><br><span class="line">        tPtr := reflect.New(tType)</span><br><span class="line">        instance := tPtr.Elem().Interface()</span><br><span class="line">        funcMayExist = reflect.ValueOf(instance).MethodByName(<span class="string">&quot;TableName&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> funcMayExist.IsValid() &#123;</span><br><span class="line">        values := funcMayExist.Call(<span class="literal">nil</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(values) != <span class="number">0</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> values[<span class="number">0</span>].Kind() == reflect.String &#123;</span><br><span class="line">                <span class="keyword">return</span> values[<span class="number">0</span>].String(), <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&quot;</span>, <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>忙了一天差不多算是完工了，现在 Golang 的泛型我怎么感觉怎么像是用反射换皮的……（还没换完整，不然为啥不支持结构体泛型？）</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL"><span class="toc-number">1.</span> <span class="toc-text">SQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TableName"><span class="toc-number">2.</span> <span class="toc-text">TableName</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://miranquil.com/post/142f8c515ee5/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://miranquil.com/post/142f8c515ee5/&text=一次折腾 Golang 反射和 Gorm 的经历"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://miranquil.com/post/142f8c515ee5/&title=一次折腾 Golang 反射和 Gorm 的经历"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://miranquil.com/post/142f8c515ee5/&is_video=false&description=一次折腾 Golang 反射和 Gorm 的经历"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=一次折腾 Golang 反射和 Gorm 的经历&body=Check out this article: https://miranquil.com/post/142f8c515ee5/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://miranquil.com/post/142f8c515ee5/&title=一次折腾 Golang 反射和 Gorm 的经历"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://miranquil.com/post/142f8c515ee5/&title=一次折腾 Golang 反射和 Gorm 的经历"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://miranquil.com/post/142f8c515ee5/&title=一次折腾 Golang 反射和 Gorm 的经历"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://miranquil.com/post/142f8c515ee5/&title=一次折腾 Golang 反射和 Gorm 的经历"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://miranquil.com/post/142f8c515ee5/&name=一次折腾 Golang 反射和 Gorm 的经历&description=&lt;p&gt;事情的起初是一个很常见的需求：批量更新多条记录的相同字段，每条记录对应的字段值不同因此无法批量 Update。看着没啥难度却没想到从开头到结束整整花了一天的时间，遂有此文。&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://miranquil.com/post/142f8c515ee5/&t=一次折腾 Golang 反射和 Gorm 的经历"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2024
+    Miranquil
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

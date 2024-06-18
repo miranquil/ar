@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="TL;DR File -&gt; Settings -&gt; Tools -&gt; Terminal Shell path -&gt; (Path to git)\bin\bash.exe --login">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在 JetBrains 系列 IDE 中使用 Git Bash&#x2F;Sh">
+<meta property="og:url" content="https://miranquil.com/post/23fbca32e41b/">
+<meta property="og:site_name" content="Miranquil Garden">
+<meta property="og:description" content="TL;DR File -&gt; Settings -&gt; Tools -&gt; Terminal Shell path -&gt; (Path to git)\bin\bash.exe --login">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-04-12T07:48:51.000Z">
+<meta property="article:modified_time" content="2024-06-18T11:36:57.873Z">
+<meta property="article:author" content="Miranquil">
+<meta property="article:tag" content="JetBrains">
+<meta property="article:tag" content="Shell">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>在 JetBrains 系列 IDE 中使用 Git Bash/Sh</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Miranquil Garden" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/ada7059758da/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/0189e7fd91e3/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://miranquil.com/post/23fbca32e41b/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://miranquil.com/post/23fbca32e41b/&text=在 JetBrains 系列 IDE 中使用 Git Bash/Sh"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://miranquil.com/post/23fbca32e41b/&title=在 JetBrains 系列 IDE 中使用 Git Bash/Sh"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://miranquil.com/post/23fbca32e41b/&is_video=false&description=在 JetBrains 系列 IDE 中使用 Git Bash/Sh"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=在 JetBrains 系列 IDE 中使用 Git Bash/Sh&body=Check out this article: https://miranquil.com/post/23fbca32e41b/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://miranquil.com/post/23fbca32e41b/&title=在 JetBrains 系列 IDE 中使用 Git Bash/Sh"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://miranquil.com/post/23fbca32e41b/&title=在 JetBrains 系列 IDE 中使用 Git Bash/Sh"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://miranquil.com/post/23fbca32e41b/&title=在 JetBrains 系列 IDE 中使用 Git Bash/Sh"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://miranquil.com/post/23fbca32e41b/&title=在 JetBrains 系列 IDE 中使用 Git Bash/Sh"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://miranquil.com/post/23fbca32e41b/&name=在 JetBrains 系列 IDE 中使用 Git Bash/Sh&description=&lt;h2 id=&#34;TL-DR&#34;&gt;&lt;a href=&#34;#TL-DR&#34; class=&#34;headerlink&#34; title=&#34;TL;DR&#34;&gt;&lt;/a&gt;TL;DR&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;File -&amp;gt; Settings -&amp;gt; Tools -&amp;gt; Terminal&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Shell path&lt;/code&gt; -&amp;gt; &lt;code&gt;(Path to git)\bin\bash.exe --login&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://miranquil.com/post/23fbca32e41b/&t=在 JetBrains 系列 IDE 中使用 Git Bash/Sh"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TL-DR"><span class="toc-number">1.</span> <span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        在 JetBrains 系列 IDE 中使用 Git Bash/Sh
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Miranquil</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-04-12T07:48:51.000Z" class="dt-published" itemprop="datePublished">2024-04-12</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Algorithm-Programming/">Algorithm & Programming</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/JetBrains/" rel="tag">JetBrains</a>, <a class="p-category" href="/tags/Shell/" rel="tag">Shell</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><ol>
+<li>File -&gt; Settings -&gt; Tools -&gt; Terminal</li>
+<li><code>Shell path</code> -&gt; <code>(Path to git)\bin\bash.exe --login</code></li>
+</ol>
+<span id="more"></span>
+
+<p>被 VDI 里 Windows 的 Powershell 搞得心力憔悴。不支持诸多 Ctrl 组合键，配合 VDI 本身就有点不稳定的延迟卡顿更是难以忍受。</p>
+<p>别问我为什么不直接用 Windows Terminal，那东西甚至天生自带延迟。</p>
+<p>某天突然想起来 Windows 下的 Git 自带有 Git Bash，添加进上面的配置发现一启动终端就会跳出个黑框，才想起来这玩意是个 win33 的 GUI……不甘心之余，想起这东西运行时候也是套了个 win 命令行程序的外框，那没准实际上本身也只是套壳而已。于是翻了一下 Git 的安装目录。</p>
+<p>果不尽然，在安装目录下发现一个 bin 文件夹，里面摆着 git 本尊和另外两个眼熟的东西……<code>sh</code> 和 <code>bash</code>，戳开发现就是想要的。</p>
+<p>于是加进 Goland，别忘了打上 <code>--login</code>参数，效果完美，又可以愉快的用习惯的 Unix-like 快捷键了。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/5725296/difference-between-sh-and-bash">Difference between sh and Bash</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/25677790/bin-bash-login-vs-bin-bash">#!&#x2F;bin&#x2F;bash –login vs #!&#x2F;bin&#x2F;bash</a></li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TL-DR"><span class="toc-number">1.</span> <span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://miranquil.com/post/23fbca32e41b/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://miranquil.com/post/23fbca32e41b/&text=在 JetBrains 系列 IDE 中使用 Git Bash/Sh"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://miranquil.com/post/23fbca32e41b/&title=在 JetBrains 系列 IDE 中使用 Git Bash/Sh"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://miranquil.com/post/23fbca32e41b/&is_video=false&description=在 JetBrains 系列 IDE 中使用 Git Bash/Sh"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=在 JetBrains 系列 IDE 中使用 Git Bash/Sh&body=Check out this article: https://miranquil.com/post/23fbca32e41b/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://miranquil.com/post/23fbca32e41b/&title=在 JetBrains 系列 IDE 中使用 Git Bash/Sh"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://miranquil.com/post/23fbca32e41b/&title=在 JetBrains 系列 IDE 中使用 Git Bash/Sh"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://miranquil.com/post/23fbca32e41b/&title=在 JetBrains 系列 IDE 中使用 Git Bash/Sh"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://miranquil.com/post/23fbca32e41b/&title=在 JetBrains 系列 IDE 中使用 Git Bash/Sh"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://miranquil.com/post/23fbca32e41b/&name=在 JetBrains 系列 IDE 中使用 Git Bash/Sh&description=&lt;h2 id=&#34;TL-DR&#34;&gt;&lt;a href=&#34;#TL-DR&#34; class=&#34;headerlink&#34; title=&#34;TL;DR&#34;&gt;&lt;/a&gt;TL;DR&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;File -&amp;gt; Settings -&amp;gt; Tools -&amp;gt; Terminal&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Shell path&lt;/code&gt; -&amp;gt; &lt;code&gt;(Path to git)\bin\bash.exe --login&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://miranquil.com/post/23fbca32e41b/&t=在 JetBrains 系列 IDE 中使用 Git Bash/Sh"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2024
+    Miranquil
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
