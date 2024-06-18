@@ -58,7 +58,7 @@ jobs:
 
       - name: Fetch Theme
         run: |
-          git clone -b master git@github.com:XPoet/hexo-theme-keep.git themes/keep
+          git clone --depth 1 -b master git@github.com:probberechts/hexo-theme-cactus.git themes/cactus
 
       - name: Deploy
         run: |

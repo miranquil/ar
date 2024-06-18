@@ -29,4 +29,3 @@ categories:
 
 * [Difference between sh and Bash](https://stackoverflow.com/questions/5725296/difference-between-sh-and-bash)
 * [#!/bin/bash --login vs #!/bin/bash](https://stackoverflow.com/questions/25677790/bin-bash-login-vs-bin-bash)
-
